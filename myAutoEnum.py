@@ -36,17 +36,24 @@ def read_scope():
 
 	# IPs
 	for ip in open(args.ip_file):
-		add_host(args.name, ip.rstrip())
+		host = add_host(ip.rstrip())
+		add_host_to_scope(args.name, host)
 
 	# Domains
-	for domain in open(args.domain_file):
-		add_domain(domain.rstrip())
+	for domain_name in open(args.domain_file):
+		domain = add_domain(domain_name.rstrip())
+		add_domain_to_scope(args.name, domain)
 
 	# Subdomains
-	for subdomain in open(args.subdomain_file):
-		if not check_domain_from_subdomain(subdomain.rstrip()):
-			add_domain(str_domain_from_subdomain(subdomain.rstrip()))
-		add_subdomain(subdomain.rstrip())
+	for subdomain_name in open(args.subdomain_file):
+		subdomain = add_subdomain(subdomain_name.rstrip())
+		domain_name = str_domain_from_subdomain(subdomain_name.rstrip())
+		domain = get_domain(domain_name)
+		if domain:
+			add_subdomain_to_domain(domain_name, subdomain)
+		else:
+			new_domain = add_domain(domain_name)
+			add_subdomain_to_domain(domain_name, subdomain)
 
 def main():
 	

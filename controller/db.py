@@ -4,6 +4,7 @@ from model.host import Host
 from model.domain import Domain
 from model.subdomain import SubDomain
 from model.webpage import WebPage
+from controller.util import *
 
 #
 # ----------------------
@@ -31,9 +32,9 @@ def add_host_to_scope(scope_name, host):
 
 def add_domain_to_scope(scope_name, domain):
 	# Append the given Doamin object to the given scope
-	scope_list = Scope.objects(name=scope_name).first()
+	scope = Scope.objects(name=scope_name).first()
 	if scope:
-		scope.hosts.append(domain)
+		scope.domains.append(domain)
 		scope.save()
 
 def get_scope(scope_name):
@@ -88,6 +89,7 @@ def add_subdomain_to_domain(domain_name, subdomain):
 	dom = Domain.objects(name=domain_name).first()
 	if dom:
 		dom.subdomains.append(subdomain)
+		dom.save()
 	
 def check_domain(domain_name):
 	# Check if a domain exists with a given domain name
@@ -96,7 +98,7 @@ def check_domain(domain_name):
 
 def check_domain_from_subdomain(subdomain):
 	# Check if a domain exists with a given subdomain name
-	domain = '.'.join(subdomain.split('.')[-2:])
+	domain = str_domain_from_subdomain(subdomain)
 	results = Domain.objects(name=domain)
 	return bool(results)
 
