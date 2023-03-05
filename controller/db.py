@@ -24,29 +24,22 @@ def add_scope(scope_name):
 
 def add_host_to_scope(scope_name, host):
 	# Append the given Host object to the given scope
-	try:
-		scope = Scope.objects(name=scope_name)[0]
+	scope = Scope.objects(name=scope_name).first()
+	if scope:
 		scope.hosts.append(host)
 		scope.save()
-	except:
-		print("	[-] Scope not found")
 
 def add_domain_to_scope(scope_name, domain):
 	# Append the given Doamin object to the given scope
-	try:
-		scope = Scope.objects(name=scope_name)[0]
-		scope.domains.append(domain)
+	scope_list = Scope.objects(name=scope_name).first()
+	if scope:
+		scope.hosts.append(domain)
 		scope.save()
-	except:
-		print("	[-] Scope not found")
 
 def get_scope(scope_name):
 	# Get a Scope of the collection
-	try:
-		results = Scope.objects(name=scope_name)
-		return results[0]
-	except:
-		return None
+	return Scope.objects(name=scope_name).first()
+	
 #
 # ----------------------
 # Host class interaction
@@ -71,11 +64,7 @@ def check_host(ip):
 
 def get_host(ip):
 	# Get a Host of the collection
-	try:
-		results = Host.objects(ip=ip)
-		return results[0]
-	except:
-		return None
+	return Host.objects(ip=ip).first()
 
 #
 # ----------------------
@@ -96,13 +85,10 @@ def add_domain(domain_name):
 
 def add_subdomain_to_domain(domain_name, subdomain):
 	# Add the object SubDomain() to a given domain name.
-	try:	
-		dom = Domain.objects(name=domain_name)[0]
+	dom = Domain.objects(name=domain_name).first()
+	if dom:
 		dom.subdomains.append(subdomain)
-	except:
-		print("	[-] Domain %s not found" % domain)
-		sys.exit(0)
-
+	
 def check_domain(domain_name):
 	# Check if a domain exists with a given domain name
 	results = Domain.objects(name=domain_name)
@@ -116,11 +102,7 @@ def check_domain_from_subdomain(subdomain):
 
 def get_domain(domain_name):
 	# Get a Domain from the collection
-	try:
-		results = Domain.objects(name=domain_name)
-		return results[0]
-	except:
-		return None
+	return Domain.objects(name=domain_name).first()
 
 
 #
@@ -148,8 +130,4 @@ def check_subdomain(subdomain_name):
 
 def get_subdomain(subdomain_name):
 	# Get a SubDomain from the collection
-	try:
-		results = SubDomain.objects(name=subdomain_name)
-		return results[0]
-	except:
-		return None
+	return SubDomain.objects(name=subdomain_name).first()
