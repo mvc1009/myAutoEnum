@@ -11,35 +11,42 @@ from model.webpage import WebPage
 # ----------------------
 #
 
-def add_scope(scope):
+def add_scope(scope_name):
 	# Add a new scope to the collection
 	try:	
-		scope = Scope(name=scope)
+		scope = Scope(name=scope_name)
 		scope.save()
-		print("	[+] Scope added: %s" % scope)
-		return scope
+		print("	[+] Scope added: %s" % scope_name)
+		return scope_name
 	except:
-		print("	[-] Err while adding %s to scope. Tried to save duplicate unique keys." % scope)
+		print("	[-] Err while adding %s to scope. Tried to save duplicate unique keys." % scope_name)
 		sys.exit(0)
 
-def add_host_to_scope(scope, host):
+def add_host_to_scope(scope_name, host):
 	# Append the given Host object to the given scope
 	try:
-		scope = Scope.objects(name=scope)[0]
+		scope = Scope.objects(name=scope_name)[0]
 		scope.hosts.append(host)
 		scope.save()
 	except:
 		print("	[-] Scope not found")
 
-def add_domain_to_scope(scope, domain):
+def add_domain_to_scope(scope_name, domain):
 	# Append the given Doamin object to the given scope
 	try:
-		scope = Scope.objects(name=scope)[0]
+		scope = Scope.objects(name=scope_name)[0]
 		scope.domains.append(domain)
 		scope.save()
 	except:
 		print("	[-] Scope not found")
 
+def get_scope(scope_name):
+	# Get a Scope of the collection
+	try:
+		results = Scope.objects(name=scope_name)
+		return results[0]
+	except:
+		return None
 #
 # ----------------------
 # Host class interaction
@@ -62,35 +69,43 @@ def check_host(ip):
 	results = Host.objects(ip=ip)
 	return bool(results)
 
+def get_host(ip):
+	# Get a Host of the collection
+	try:
+		results = Host.objects(ip=ip)
+		return results[0]
+	except:
+		return None
+
 #
 # ----------------------
 #  Domain class interaction
 # ----------------------
 #
 
-def add_domain(domain):
+def add_domain(domain_name):
 	# Add a new domain to the collection
 	try:	
-		dom = Domain(name=domain)
+		dom = Domain(name=domain_name)
 		dom.save()
-		print("	[+] Domain added: %s" % domain)
+		print("	[+] Domain added: %s" % domain_name)
 		return dom
 	except:
-		print("	[-] Err while adding %s to domains. Tried to save duplicate unique keys." % domain)
+		print("	[-] Err while adding %s to domains. Tried to save duplicate unique keys." % domain_name)
 		sys.exit(0)
 
-def add_subdomain_to_domain(domain, subdomain):
+def add_subdomain_to_domain(domain_name, subdomain):
 	# Add the object SubDomain() to a given domain name.
 	try:	
-		dom = Domain.objects(name=domain)[0]
+		dom = Domain.objects(name=domain_name)[0]
 		dom.subdomains.append(subdomain)
 	except:
 		print("	[-] Domain %s not found" % domain)
 		sys.exit(0)
 
-def check_domain(domain):
+def check_domain(domain_name):
 	# Check if a domain exists with a given domain name
-	results = Domain.objects(name=domain)
+	results = Domain.objects(name=domain_name)
 	return bool(results)
 
 def check_domain_from_subdomain(subdomain):
@@ -99,6 +114,14 @@ def check_domain_from_subdomain(subdomain):
 	results = Domain.objects(name=domain)
 	return bool(results)
 
+def get_domain(domain_name):
+	# Get a Domain from the collection
+	try:
+		results = Domain.objects(name=domain_name)
+		return results[0]
+	except:
+		return None
+
 
 #
 # ----------------------
@@ -106,19 +129,27 @@ def check_domain_from_subdomain(subdomain):
 # ----------------------
 #
 
-def add_subdomain(subdomain):
+def add_subdomain(subdomain_name):
 	# Add a new subdomain to the collection
 	try:	
-		sub = SubDomain(name=subdomain)
-		sub.save()
-		print("	[+] Subdomain added: %s" % subdomain)
-		return sub
+		subdomain = SubDomain(name=subdomain_name)
+		subdomain.save()
+		print("	[+] Subdomain added: %s" % subdomain_name)
+		return subdomain
 
 	except:
-		print("	[-] Err while adding %s to Subdomains. Tried to save duplicate unique keys." % subdomain)
+		print("	[-] Err while adding %s to Subdomains. Tried to save duplicate unique keys." % subdomain_name)
 		sys.exit(0)
 
-def check_subdomain(subdomain):
+def check_subdomain(subdomain_name):
 	# Check if a subdomain exists with a given subdomain name
-	results = SubDomain.objects(name=subdomain)
+	results = SubDomain.objects(name=subdomain_name)
 	return bool(results)
+
+def get_subdomain(subdomain_name):
+	# Get a SubDomain from the collection
+	try:
+		results = SubDomain.objects(name=subdomain_name)
+		return results[0]
+	except:
+		return None
