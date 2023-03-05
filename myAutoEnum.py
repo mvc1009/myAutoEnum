@@ -17,6 +17,8 @@ from model.host import Host
 from model.domain import Domain
 from model.subdomain import SubDomain
 from model.webpage import WebPage
+from controller.db import *
+from controller.util import *
 
 def init():
 	try:
@@ -30,35 +32,21 @@ def init():
 def read_scope():
 
 	# Scope
-	try:	
-		scope = Scope(name=args.name)
-		scope.save()
-		print("	[+] %s added to scope" % args.name)
-	except:
-		print("	[-] Err while adding %s to scope. Tried to save duplicate unique keys." % args.name)
-		sys.exit(0)
+	add_scope(args.name)
 
 	# IPs
-	for ip in open(args.ip_file)
-		try:	
-			host = Host(ip=ip)
-			host.save()
-			print("	[+] %s added to hosts" % ip)
-		except:
-			print("	[-] Err while adding %s to Hosts. Tried to save duplicate unique keys." % ip)
-			sys.exit(0)
+	for ip in open(args.ip_file):
+		add_host(args.name, ip.rstrip())
 
 	# Domains
-	for domain in open(args.domain_file)
-		try:	
-			dom = Host(name=domain)
-			dom.save()
-			print("	[+] %s added to domains" % domain)
-		except:
-			print("	[-] Err while adding %s to Domains. Tried to save duplicate unique keys." % ip)
-			sys.exit(0)
+	for domain in open(args.domain_file):
+		add_domain(domain.rstrip())
 
 	# Subdomains
+	for subdomain in open(args.subdomain_file):
+		if not check_domain_from_subdomain(subdomain.rstrip()):
+			add_domain(str_domain_from_subdomain(subdomain.rstrip()))
+		add_subdomain(subdomain.rstrip())
 
 def main():
 	
@@ -67,19 +55,20 @@ def main():
 
 	# Defining the scope
 	print("[!] Defining the Scope")
+	read_scope()
 	
 		
 	# Discovery
-	print("[!] Starting Discovery")
+	#print("[!] Starting Discovery")
 
 	# Enum
-	print("[!] Starting Enumeration")
+	#print("[!] Starting Enumeration")
 
 	# Export
-	print("[!] Starting Exports")
+	#print("[!] Starting Exports")
 	
 	# Exit
-	print("[!] Finished")
+	print("[+] Finished")
 
 try:
 	if __name__ == "__main__":
