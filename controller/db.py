@@ -6,16 +6,18 @@ from model.subdomain import SubDomain
 from model.webpage import WebPage
 
 #
+# ----------------------
 # Scope class interaction
+# ----------------------
 #
 
 def add_scope(scope):
+	# Add a new scope to the collection
 	try:	
 		scope = Scope(name=scope)
 		scope.save()
 		print("	[+] Scope added: %s" % scope)
 		return scope
-
 	except:
 		print("	[-] Err while adding %s to scope. Tried to save duplicate unique keys." % scope)
 		sys.exit(0)
@@ -29,9 +31,21 @@ def add_host_to_scope(scope, host):
 	except:
 		print("	[-] Scope not found")
 
+def add_domain_to_scope(scope, domain):
+	# Append the given Doamin object to the given scope
+	try:
+		scope = Scope.objects(name=scope)[0]
+		scope.domains.append(domain)
+		scope.save()
+	except:
+		print("	[-] Scope not found")
+
 #
+# ----------------------
 # Host class interaction
+# ----------------------
 #
+
 def add_host(ip):
 	# Add a new Host to the collection
 	try:	
@@ -43,16 +57,15 @@ def add_host(ip):
 		print("	[-] Err while adding %s to hosts. Tried to save duplicate unique keys." % ip)
 		sys.exit(0)
 
-
-
-
 def check_host(ip):
 	# Check if the IP exists on the collection
 	results = Host.objects(ip=ip)
 	return bool(results)
 
 #
-# Domain class interaction
+# ----------------------
+#  Domain class interaction
+# ----------------------
 #
 
 def add_domain(domain):
@@ -88,10 +101,13 @@ def check_domain_from_subdomain(subdomain):
 
 
 #
+# ----------------------
 # SubDomain class interaction
+# ----------------------
 #
 
 def add_subdomain(subdomain):
+	# Add a new subdomain to the collection
 	try:	
 		sub = SubDomain(name=subdomain)
 		sub.save()
@@ -103,5 +119,6 @@ def add_subdomain(subdomain):
 		sys.exit(0)
 
 def check_subdomain(subdomain):
+	# Check if a subdomain exists with a given subdomain name
 	results = SubDomain.objects(name=subdomain)
 	return bool(results)

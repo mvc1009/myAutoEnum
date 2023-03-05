@@ -6,3 +6,4 @@ class Scope(BaseDocument):
 	}
 	name = db.StringField(required=True, unique=True)
 	hosts = db.ListField(db.ReferenceField("Host"))
+	domains = db.ListField(db.ReferenceField("Domain"))
