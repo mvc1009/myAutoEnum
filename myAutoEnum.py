@@ -27,6 +27,39 @@ def init():
 		print("[-] Err while connecting to mongodb")
 		sys.exit(0)
 
+def read_scope():
+
+	# Scope
+	try:	
+		scope = Scope(name=args.name)
+		scope.save()
+		print("	[+] %s added to scope" % args.name)
+	except:
+		print("	[-] Err while adding %s to scope. Tried to save duplicate unique keys." % args.name)
+		sys.exit(0)
+
+	# IPs
+	for ip in open(args.ip_file)
+		try:	
+			host = Host(ip=ip)
+			host.save()
+			print("	[+] %s added to hosts" % ip)
+		except:
+			print("	[-] Err while adding %s to Hosts. Tried to save duplicate unique keys." % ip)
+			sys.exit(0)
+
+	# Domains
+	for domain in open(args.domain_file)
+		try:	
+			dom = Host(name=domain)
+			dom.save()
+			print("	[+] %s added to domains" % domain)
+		except:
+			print("	[-] Err while adding %s to Domains. Tried to save duplicate unique keys." % ip)
+			sys.exit(0)
+
+	# Subdomains
+
 def main():
 	
 	# Initialize
@@ -34,13 +67,7 @@ def main():
 
 	# Defining the scope
 	print("[!] Defining the Scope")
-	try:	
-		scope = Scope(name=args.name)
-		scope.save()
-		print("	[+] %s added to scope" % args.name)
-	except:
-		print("	[-] Err while adding content to mongodb. Tried to save duplicate unique keys.")
-		sys.exit(0)
+	
 		
 	# Discovery
 	print("[!] Starting Discovery")
@@ -57,8 +84,8 @@ def main():
 try:
 	if __name__ == "__main__":
 		parser = argparse.ArgumentParser(description='myAutoEnum is a tool that automate some task when a new pentest is started.')
-		parser.add_argument('-n', '--name', action='store', dest='name', help='Name of the pentest', type=str)
-		parser.add_argument('-i', '--scope', action='store', dest='scope_file', help='File with IPs list', type=str)
+		parser.add_argument('-n', '--name', action='store', dest='name', help='Name of the pentest', type=str, required=True)
+		parser.add_argument('-i', '--ips', action='store', dest='ip_file', help='File with IPs list', type=str)
 		parser.add_argument('-d', '--domains', action='store', dest='domain_file', help='File with Domains list', type=str)
 		parser.add_argument('-s', '--subdomains', action='store', dest='subdomain_file', help='File with SubDomains list', type=str)
 		global args

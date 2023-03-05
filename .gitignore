@@ -3,3 +3,6 @@ __pycache__
 .env
 .idea
 .DS_Store
+domains.txt
+ips.txt
+subdomains.txt
