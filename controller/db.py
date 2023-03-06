@@ -45,6 +45,7 @@ def get_scope(scope_name):
 def new_scope(scope_name):
 	if not check_scope(scope_name):
 		return add_scope(scope_name)
+	return None
 
 #
 # ----------------------
@@ -74,6 +75,7 @@ def new_host(scope_name, ip):
 		host = add_host(ip)
 		add_host_to_scope(scope_name, host)
 		return host
+	return None
 
 #
 # ----------------------
@@ -121,7 +123,7 @@ def new_domain(scope_name, domain_name):
 		domain = add_domain(domain_name)
 		add_domain_to_scope(scope_name, domain)
 		return domain
-
+	return None
 #
 # ----------------------
 # SubDomain class interaction
@@ -150,8 +152,9 @@ def new_subdomain(scope_name, subdomain_name):
 		subdomain = add_subdomain(subdomain_name)
 		domain_name = str_domain_from_subdomain(subdomain_name)
 		domain = get_domain(domain_name)
+		new_dom = None
 		if not domain:
-			new_domain = add_domain(domain_name)
-			add_domain_to_scope(scope_name, new_domain)
+			new_dom = new_domain(scope_name, domain_name)
 		add_subdomain_to_domain(domain_name, subdomain)
-		return subdomain
+		return new_dom, subdomain
+	return None, None

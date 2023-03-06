@@ -66,23 +66,30 @@ def main():
 	init()
 
 	# Defining the scope
+	print("")
 	print("[!] Defining the Scope")
 	print("----------------------")
 	read_scope()
 	
 		
 	# Discovery
+	print("")
 	print("[!] Starting Discovery")
 	print("----------------------")
 	discover()
 
 	# Enum
+	#print("")
 	#print("[!] Starting Enumeration")
-
-	# Export
-	#print("[!] Starting Exports")
+	#print("----------------------")
 	
+	# Export
+	#print("")
+	#print("[!] Starting Exports")
+	#print("----------------------")
+
 	# Exit
+	#print("")
 	print("----------------------")
 	print("[+] Finished")
 
