@@ -1,4 +1,5 @@
 from model.base import *
+from model.subdomain import SubDomain
 
 class Domain(BaseDocument):
 	meta = {

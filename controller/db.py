@@ -14,14 +14,10 @@ from controller.util import *
 
 def add_scope(scope_name):
 	# Add a new scope to the collection
-	try:	
-		scope = Scope(name=scope_name)
-		scope.save()
-		print("	[+] Scope added: %s" % scope_name)
-		return scope_name
-	except:
-		print("	[-] Err while adding %s to scope. Tried to save duplicate unique keys." % scope_name)
-		sys.exit(0)
+	scope = Scope(name=scope_name)
+	scope.save()
+	print("	[+] Scope added: %s" % scope_name)
+	return scope
 
 def add_host_to_scope(scope_name, host):
 	# Append the given Host object to the given scope
@@ -37,10 +33,19 @@ def add_domain_to_scope(scope_name, domain):
 		scope.domains.append(domain)
 		scope.save()
 
+def check_scope(scope_name):
+	# Check if the scope exists on the collection
+	results = Scope.objects(name=scope_name)
+	return bool(results)
+
 def get_scope(scope_name):
 	# Get a Scope of the collection
 	return Scope.objects(name=scope_name).first()
-	
+
+def new_scope(scope_name):
+	if not check_scope(scope_name):
+		return add_scope(scope_name)
+
 #
 # ----------------------
 # Host class interaction
@@ -49,14 +54,11 @@ def get_scope(scope_name):
 
 def add_host(ip):
 	# Add a new Host to the collection
-	try:	
-		host = Host(ip=ip)
-		host.save()
-		print("	[+] Host added: %s" % ip)
-		return host
-	except:
-		print("	[-] Err while adding %s to hosts. Tried to save duplicate unique keys." % ip)
-		sys.exit(0)
+	host = Host(ip=ip)
+	host.save()
+	print("	[+] Host added: %s" % ip)
+	return host
+
 
 def check_host(ip):
 	# Check if the IP exists on the collection
@@ -67,6 +69,12 @@ def get_host(ip):
 	# Get a Host of the collection
 	return Host.objects(ip=ip).first()
 
+def new_host(scope_name, ip):
+	if not check_host(ip):
+		host = add_host(ip)
+		add_host_to_scope(scope_name, host)
+		return host
+
 #
 # ----------------------
 #  Domain class interaction
@@ -75,14 +83,11 @@ def get_host(ip):
 
 def add_domain(domain_name):
 	# Add a new domain to the collection
-	try:	
-		dom = Domain(name=domain_name)
-		dom.save()
-		print("	[+] Domain added: %s" % domain_name)
-		return dom
-	except:
-		print("	[-] Err while adding %s to domains. Tried to save duplicate unique keys." % domain_name)
-		sys.exit(0)
+	dom = Domain(name=domain_name)
+	dom.save()
+	print("	[+] Domain added: %s" % domain_name)
+	return dom
+
 
 def add_subdomain_to_domain(domain_name, subdomain):
 	# Add the object SubDomain() to a given domain name.
@@ -106,6 +111,16 @@ def get_domain(domain_name):
 	# Get a Domain from the collection
 	return Domain.objects(name=domain_name).first()
 
+def get_all_domain_names():
+	# Get a list of domain names (str)
+	domains = Domain.objects()
+	return [o.name for o in domains]
+
+def new_domain(scope_name, domain_name):
+	if not check_domain(domain_name):
+		domain = add_domain(domain_name)
+		add_domain_to_scope(scope_name, domain)
+		return domain
 
 #
 # ----------------------
@@ -115,15 +130,11 @@ def get_domain(domain_name):
 
 def add_subdomain(subdomain_name):
 	# Add a new subdomain to the collection
-	try:	
-		subdomain = SubDomain(name=subdomain_name)
-		subdomain.save()
-		print("	[+] Subdomain added: %s" % subdomain_name)
-		return subdomain
+	subdomain = SubDomain(name=subdomain_name)
+	subdomain.save()
+	print("	[+] Subdomain added: %s" % subdomain_name)
+	return subdomain
 
-	except:
-		print("	[-] Err while adding %s to Subdomains. Tried to save duplicate unique keys." % subdomain_name)
-		sys.exit(0)
 
 def check_subdomain(subdomain_name):
 	# Check if a subdomain exists with a given subdomain name
@@ -133,3 +144,14 @@ def check_subdomain(subdomain_name):
 def get_subdomain(subdomain_name):
 	# Get a SubDomain from the collection
 	return SubDomain.objects(name=subdomain_name).first()
+
+def new_subdomain(scope_name, subdomain_name):
+	if not check_subdomain(subdomain_name):
+		subdomain = add_subdomain(subdomain_name)
+		domain_name = str_domain_from_subdomain(subdomain_name)
+		domain = get_domain(domain_name)
+		if not domain:
+			new_domain = add_domain(domain_name)
+			add_domain_to_scope(scope_name, new_domain)
+		add_subdomain_to_domain(domain_name, subdomain)
+		return subdomain

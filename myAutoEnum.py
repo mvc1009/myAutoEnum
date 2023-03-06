@@ -19,6 +19,8 @@ from model.subdomain import SubDomain
 from model.webpage import WebPage
 from controller.db import *
 from controller.util import *
+from discover.discovery import *
+from discover.modules import *
 
 def init():
 	try:
@@ -32,28 +34,31 @@ def init():
 def read_scope():
 
 	# Scope
-	add_scope(args.name)
+	new_scope(args.name)
 
 	# IPs
 	for ip in open(args.ip_file):
-		host = add_host(ip.rstrip())
-		add_host_to_scope(args.name, host)
+		new_host(args.name, ip.rstrip())
 
 	# Domains
 	for domain_name in open(args.domain_file):
-		domain = add_domain(domain_name.rstrip())
-		add_domain_to_scope(args.name, domain)
+		new_domain(args.name, domain_name.rstrip())
 
 	# Subdomains
 	for subdomain_name in open(args.subdomain_file):
-		subdomain = add_subdomain(subdomain_name.rstrip())
-		domain_name = str_domain_from_subdomain(subdomain_name.rstrip())
-		domain = get_domain(domain_name)
-		if domain:
-			add_subdomain_to_domain(domain_name, subdomain)
-		else:
-			new_domain = add_domain(domain_name)
-			add_subdomain_to_domain(domain_name, subdomain)
+		new_subdomain(args.name, subdomain_name.rstrip())
+
+
+def discover():
+
+	# Getting Domains/SubDomains from IPs
+
+	# Getting SubDomains from Domains
+	domain_names = get_all_domain_names()
+
+	for domain_name in domain_names:
+		results = find_subdomains(args.name, domain_name)
+
 
 def main():
 	
@@ -62,11 +67,14 @@ def main():
 
 	# Defining the scope
 	print("[!] Defining the Scope")
+	print("----------------------")
 	read_scope()
 	
 		
 	# Discovery
-	#print("[!] Starting Discovery")
+	print("[!] Starting Discovery")
+	print("----------------------")
+	discover()
 
 	# Enum
 	#print("[!] Starting Enumeration")
@@ -75,6 +83,7 @@ def main():
 	#print("[!] Starting Exports")
 	
 	# Exit
+	print("----------------------")
 	print("[+] Finished")
 
 try:
