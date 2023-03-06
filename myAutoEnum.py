@@ -52,12 +52,14 @@ def read_scope():
 def discover():
 
 	# Getting Domains/SubDomains from IPs
+	ips = get_all_ips()
+	for ip in ips:
+		find_domains()
 
 	# Getting SubDomains from Domains
 	domain_names = get_all_domain_names()
-
 	for domain_name in domain_names:
-		results = find_subdomains(args.name, domain_name)
+		find_subdomains(args.name, domain_name)
 
 
 def main():

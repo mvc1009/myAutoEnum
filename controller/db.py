@@ -77,6 +77,11 @@ def new_host(scope_name, ip):
 		return host
 	return None
 
+def get_all_ips():
+	# Get a list of domain names (str)
+	hosts = Host.objects()
+	return [o.ip for o in hosts]
+
 #
 # ----------------------
 #  Domain class interaction
