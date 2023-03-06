@@ -9,9 +9,15 @@ def find_domains(ip):
 def find_subdomains(scope_name, domain_name):
 	# Return Domain / Subdomain
 	print("[!] Finding Subdomains of %s" % domain_name)
-	# Modules
-	results = similar_certificate(domain_name)
+	results = set()
 
+	# Modules
+	print('	[!] Similar Certificates module')
+	results.update(similar_certificate(domain_name))
+	print(results)
+	print('	[!] Wayback module')
+	results.update(get_subdomains_with_wayback(domain_name))
+	print('	[+] Joining results')
 	for r in results:
 		print("		- Found %s" % r)
 		if str_is_domain(r):
