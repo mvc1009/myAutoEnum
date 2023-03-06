@@ -54,7 +54,7 @@ def discover():
 	# Getting Domains/SubDomains from IPs
 	ips = get_all_ips()
 	for ip in ips:
-		find_domains()
+		find_domains(ip)
 
 	# Getting SubDomains from Domains
 	domain_names = get_all_domain_names()
