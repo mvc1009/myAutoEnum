@@ -25,10 +25,10 @@ from discover.modules import *
 def init():
 	try:
 		# Connecting to the Database
-		print("[!] Connecting to the Database")
+		print_status("Connecting to the Database")
 		db.connect(host='mongodb://localhost:27017/autoenum')
 	except:
-		print("[-] Err while connecting to mongodb")
+		print_error("Err while connecting to mongodb")
 		sys.exit(0)
 
 def read_scope():
@@ -69,14 +69,14 @@ def main():
 
 	# Defining the scope
 	print("")
-	print("[!] Defining the Scope")
+	print_status("Defining the Scope")
 	print("----------------------")
 	read_scope()
 	
 		
 	# Discovery
 	print("")
-	print("[!] Starting Discovery")
+	print_status("Starting Discovery")
 	print("----------------------")
 	discover()
 
@@ -93,7 +93,7 @@ def main():
 	# Exit
 	#print("")
 	print("----------------------")
-	print("[+] Finished")
+	print_status("Finished")
 
 try:
 	if __name__ == "__main__":
@@ -112,4 +112,4 @@ try:
 		main()
 
 except KeyboardInterrupt:
-	print("[!] Keyboard Interrupt. Shutting down")
+	print_error("Keyboard Interrupt. Shutting down")

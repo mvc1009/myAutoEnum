@@ -16,7 +16,7 @@ def add_scope(scope_name):
 	# Add a new scope to the collection
 	scope = Scope(name=scope_name)
 	scope.save()
-	print("	[+] Scope added: %s" % scope_name)
+	print_good("Scope added: %s" % scope_name)
 	return scope
 
 def add_host_to_scope(scope_name, host):
@@ -57,7 +57,7 @@ def add_host(ip):
 	# Add a new Host to the collection
 	host = Host(ip=ip)
 	host.save()
-	print("	[+] Host added: %s" % ip)
+	print_good("Host added: %s" % ip)
 	return host
 
 
@@ -92,7 +92,7 @@ def add_domain(domain_name):
 	# Add a new domain to the collection
 	dom = Domain(name=domain_name)
 	dom.save()
-	print("	[+] Domain added: %s" % domain_name)
+	print_good("Domain added: %s" % domain_name)
 	return dom
 
 
@@ -139,7 +139,7 @@ def add_subdomain(subdomain_name):
 	# Add a new subdomain to the collection
 	subdomain = SubDomain(name=subdomain_name)
 	subdomain.save()
-	print("	[+] Subdomain added: %s" % subdomain_name)
+	print_good("Subdomain added: %s" % subdomain_name)
 	return subdomain
 
 
