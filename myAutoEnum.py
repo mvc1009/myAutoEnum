@@ -19,8 +19,8 @@ from model.subdomain import SubDomain
 from model.webpage import WebPage
 from controller.db import *
 from controller.util import *
-from discover.discovery import *
-from discover.modules import *
+from discovery.discovery import *
+from discovery.modules import *
 
 def init():
 	try:
@@ -49,23 +49,43 @@ def read_scope():
 		new_subdomain(args.name, subdomain_name.rstrip())
 
 
-def discover():
+def discover(discovery_modules):
 
 	# Getting Domains/SubDomains from IPs
 	ips = get_all_ips()
 	for ip in ips:
-		find_domains(ip)
+		find_domains(discovery_modules, args.name, ip)
 
 	# Getting SubDomains from Domains
 	domain_names = get_all_domain_names()
 	for domain_name in domain_names:
-		find_subdomains(args.name, domain_name)
+		find_subdomains(discovery_modules, args.name, domain_name)
 
 
 def main():
 	
 	# Initialize
 	init()
+
+	
+	discovery_modules = [
+		'reverse_ip',
+		'similar_certificate',
+		'read_certificate',
+		'wayback_domains',
+		'fuzz_dns'
+	]
+	
+	#discovery_modules = ['fuzz_dns']
+
+	enum_modules = [
+		'ip_history',
+		'wayback_urls',
+		'gowitness',
+		'dnslookup',
+		'get_emails',
+		'subdomain_takeover'
+	]
 
 	# Defining the scope
 	print("")
@@ -78,7 +98,7 @@ def main():
 	print("")
 	print_status("Starting Discovery")
 	print("----------------------")
-	discover()
+	discover(discovery_modules)
 
 	# Enum
 	#print("")
@@ -102,6 +122,8 @@ try:
 		parser.add_argument('-i', '--ips', action='store', dest='ip_file', help='File with IPs list', type=str)
 		parser.add_argument('-d', '--domains', action='store', dest='domain_file', help='File with Domains list', type=str)
 		parser.add_argument('-s', '--subdomains', action='store', dest='subdomain_file', help='File with SubDomains list', type=str)
+		parser.add_argument('-m', '--modules', action='store', dest='modules', help='Modules to use: reverse_ip,similar_certificate,read_certificate,wayback_domains,fuzz_dns,ip_history,wayback_urls', type=str)
+
 		global args
 		args =  parser.parse_args()
 
