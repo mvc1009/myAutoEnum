@@ -49,12 +49,12 @@ def read_scope():
 		new_subdomain(args.name, subdomain_name.rstrip())
 
 
-def discover(discovery_modules):
+def discover(discovery_modules, viewdns_api_key):
 
 	# Getting Domains/SubDomains from IPs
 	ips = get_all_ips()
 	for ip in ips:
-		find_domains(discovery_modules, args.name, ip)
+		find_domains(discovery_modules, args.name, ip, viewdns_api_key)
 
 	# Getting SubDomains from Domains
 	domain_names = get_all_domain_names()
@@ -70,10 +70,10 @@ def main():
 	
 	discovery_modules = [
 		'reverse_ip',
-		'similar_certificate',
-		'read_certificate',
-		'wayback_domains',
-		'fuzz_dns'
+		#'similar_certificate',
+		#'read_certificate',
+		#'wayback_domains',
+		#'fuzz_dns'
 	]
 	
 	#discovery_modules = ['fuzz_dns']
@@ -98,7 +98,7 @@ def main():
 	print("")
 	print_status("Starting Discovery")
 	print("----------------------")
-	discover(discovery_modules)
+	discover(discovery_modules, args.viewdns_api_key)
 
 	# Enum
 	#print("")
@@ -123,6 +123,7 @@ try:
 		parser.add_argument('-d', '--domains', action='store', dest='domain_file', help='File with Domains list', type=str)
 		parser.add_argument('-s', '--subdomains', action='store', dest='subdomain_file', help='File with SubDomains list', type=str)
 		parser.add_argument('-m', '--modules', action='store', dest='modules', help='Modules to use: reverse_ip,similar_certificate,read_certificate,wayback_domains,fuzz_dns,ip_history,wayback_urls', type=str)
+		parser.add_argument('-vapi', '--viewdns-api-key', action='store', dest='viewdns_api_key', help='ViewDNS api key (Needed if reverse_ip module is used!)', type=str)
 
 		global args
 		args =  parser.parse_args()

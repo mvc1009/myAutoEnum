@@ -1,0 +1,3 @@
+admin
+wiki
+test
