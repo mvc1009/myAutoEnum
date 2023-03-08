@@ -76,6 +76,12 @@ def compare():
 	subdomain_names = get_all_subdomain_names()
 	compare_scope(ips, subdomain_names)
 
+def enum():
+	print("")
+
+def export():
+	print("")
+
 def main():
 	
 	# Initialize
@@ -90,8 +96,6 @@ def main():
 		'fuzz_dns'
 	]
 	
-	#discovery_modules = ['fuzz_dns']
-
 	enum_modules = [
 		'ip_history',
 		'wayback_urls',
@@ -117,21 +121,23 @@ def main():
 	print("")
 	print_status("Comparing")
 	print("----------------------")
-	compare()
+	#compare()
 
 
 	# Enum
-	#print("")
-	#print("[!] Starting Enumeration")
-	#print("----------------------")
+	print("")
+	print_status("Starting Enumeration")
+	print("----------------------")
+	enum()
 	
 	# Export
-	#print("")
-	#print("[!] Starting Exports")
-	#print("----------------------")
+	print("")
+	print_status("Starting Exports")
+	print("----------------------")
+	export()
 
 	# Exit
-	#print("")
+	print("")
 	print("----------------------")
 	print_status("Finished")
 

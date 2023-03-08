@@ -25,7 +25,10 @@ def reverse_ip(ip):
 			r_json = r.json()
 			if int(r_json['response']['domain_count']) > 0:		
 				for name in r_json['response']['domains']:
-					results.add(name['name'])
+					if '*.' in name['name']:
+						results.add(name['name'][2:])
+					else:
+						results.add(name['name'])
 	else:
 		print_error("No ViewDNS API key was provided!")
 	return results
@@ -61,7 +64,7 @@ def read_certificate(ip):
 		subject = read_subject_from_certificate(ip, port)
 		if subject:
 			if '*.' in subject:
-				dns_names.update('.'.join(subject.split('.')[1:]))
+				dns_names.update(subject[2:])
 			else:
 				dns_names.update(subject)
 	return dns_names
