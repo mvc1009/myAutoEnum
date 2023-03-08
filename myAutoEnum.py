@@ -1,17 +1,5 @@
 import os,sys
 
-try:
-	import argparse
-except:
-	print('[!] argparse is not installed. Try "pip install argparse"')
-	sys.exit(0)
-
-try:
-	import mongoengine as db
-except:
-	print('[!] mongoengine is not installed. Try "pip install mongoengine"')
-	sys.exit(0)
-
 from model.scope import Scope
 from model.host import Host
 from model.domain import Domain
@@ -22,14 +10,35 @@ from controller.util import *
 from discovery.discovery import *
 from discovery.modules import *
 
+try:
+	import argparse
+except:
+	print_error('argparse is not installed. Try "pip install argparse"')
+	sys.exit(0)
+
+try:
+	import mongoengine as db
+except:
+	print_error('mongoengine is not installed. Try "pip install mongoengine"')
+	sys.exit(0)
+try:
+	from dotenv import load_dotenv
+except:
+	print_error('python-dotenv is not installed. Try "pip install python-dotenv"')
+
+
+
 def init():
 	try:
+		# Loading .env variables
+		load_dotenv()
 		# Connecting to the Database
 		print_status("Connecting to the Database")
-		db.connect(host='mongodb://localhost:27017/autoenum')
+		db.connect(host=os.environ.get("DB_URL"))
 	except:
 		print_error("Err while connecting to mongodb")
 		sys.exit(0)
+
 
 def read_scope():
 
@@ -49,12 +58,12 @@ def read_scope():
 		new_subdomain(args.name, subdomain_name.rstrip())
 
 
-def discover(discovery_modules, viewdns_api_key):
+def discover(discovery_modules):
 
 	# Getting Domains/SubDomains from IPs
 	ips = get_all_ips()
 	for ip in ips:
-		find_domains(discovery_modules, args.name, ip, viewdns_api_key)
+		find_domains(discovery_modules, args.name, ip)
 
 	# Getting SubDomains from Domains
 	domain_names = get_all_domain_names()
@@ -98,7 +107,7 @@ def main():
 	print("")
 	print_status("Starting Discovery")
 	print("----------------------")
-	discover(discovery_modules, args.viewdns_api_key)
+	discover(discovery_modules)
 
 	# Enum
 	#print("")
@@ -123,7 +132,6 @@ try:
 		parser.add_argument('-d', '--domains', action='store', dest='domain_file', help='File with Domains list', type=str)
 		parser.add_argument('-s', '--subdomains', action='store', dest='subdomain_file', help='File with SubDomains list', type=str)
 		parser.add_argument('-m', '--modules', action='store', dest='modules', help='Modules to use: reverse_ip,similar_certificate,read_certificate,wayback_domains,fuzz_dns,ip_history,wayback_urls', type=str)
-		parser.add_argument('-vapi', '--viewdns-api-key', action='store', dest='viewdns_api_key', help='ViewDNS api key (Needed if reverse_ip module is used!)', type=str)
 
 		global args
 		args =  parser.parse_args()

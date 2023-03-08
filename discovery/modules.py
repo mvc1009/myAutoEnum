@@ -14,20 +14,18 @@ from controller.util import *
 # ------------------------
 #
 
-def reverse_ip(ip, viewdns_api_key):
+def reverse_ip(ip):
 	# Return a list of DNS names from a reverse DNS IP resolution.
 	# Usage of viewdns.info API.
 	# API KEY is needed!
 	results = set()
-	if viewdns_api_key:
-		r = requests.get('https://api.viewdns.info/reverseip/?host=%s&apikey=%s&output=json' % (ip, viewdns_api_key))
+	if os.environ.get('VIEWDNS_API_KEY'):
+		r = requests.get('https://api.viewdns.info/reverseip/?host=%s&apikey=%s&output=json' % (ip, os.environ.get('VIEWDNS_API_KEY')))
 		if r.status_code == 200:
-			r_json = r.json()
 			print(r_json)
 			if int(r_json['response']['domain_count']) > 0:		
 				for name in r_json['response']['domains']:
 					results.add(name['name'])
-					print(name['name'])
 	else:
 		print_error("No ViewDNS API key was provided!")
 	return results

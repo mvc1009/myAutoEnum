@@ -2,7 +2,7 @@ import requests
 from controller.db import *
 from discovery.modules import *
 
-def find_domains(discovery_modules, scope_name, ip, viewdns_api_key):
+def find_domains(discovery_modules, scope_name, ip):
 	print("")
 	print_debug("Finding Domains of %s" % ip)
 	results = set()
@@ -10,7 +10,7 @@ def find_domains(discovery_modules, scope_name, ip, viewdns_api_key):
 	# Modules
 	if 'reverse_ip' in discovery_modules:
 		print_status(' 	Reverse IP module (viewdns)')
-		results.update(reverse_ip(ip, viewdns_api_key))
+		results.update(reverse_ip(ip))
 	if 'read_certificate' in discovery_modules:
 		print_status('	OpenSSL module')
 		results.update(read_certificate(ip))
