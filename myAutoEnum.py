@@ -9,6 +9,7 @@ from controller.db import *
 from controller.util import *
 from discovery.discovery import *
 from discovery.modules import *
+from compare.comparer import *
 
 try:
 	import argparse
@@ -70,6 +71,10 @@ def discover(discovery_modules):
 	for domain_name in domain_names:
 		find_subdomains(discovery_modules, args.name, domain_name)
 
+def compare():
+	ips = get_all_ips()
+	subdomain_names = get_all_subdomain_names()
+	compare_scope(ips, subdomain_names)
 
 def main():
 	
@@ -79,10 +84,10 @@ def main():
 	
 	discovery_modules = [
 		'reverse_ip',
-		#'similar_certificate',
-		#'read_certificate',
-		#'wayback_domains',
-		#'fuzz_dns'
+		'similar_certificate',
+		'read_certificate',
+		'wayback_domains',
+		'fuzz_dns'
 	]
 	
 	#discovery_modules = ['fuzz_dns']
@@ -101,13 +106,19 @@ def main():
 	print_status("Defining the Scope")
 	print("----------------------")
 	read_scope()
-	
 		
 	# Discovery
 	print("")
 	print_status("Starting Discovery")
 	print("----------------------")
-	discover(discovery_modules)
+	#discover(discovery_modules)
+
+	# Compare
+	print("")
+	print_status("Comparing")
+	print("----------------------")
+	compare()
+
 
 	# Enum
 	#print("")

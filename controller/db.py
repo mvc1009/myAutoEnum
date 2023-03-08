@@ -152,6 +152,15 @@ def get_subdomain(subdomain_name):
 	# Get a SubDomain from the collection
 	return SubDomain.objects(name=subdomain_name).first()
 
+def get_all_subdomain_names():
+	# Get a list of subdomain names (str)
+	subdomains = SubDomain.objects()
+	return [o.name for o in subdomains]
+
+def get_scope_subdomain_name():
+	subdomains = SubDomain.objects(is_scope=True)
+	return [o.name for o in subdomains]
+
 def new_subdomain(scope_name, subdomain_name):
 	if not check_subdomain(subdomain_name):
 		subdomain = add_subdomain(subdomain_name)
@@ -163,3 +172,21 @@ def new_subdomain(scope_name, subdomain_name):
 		add_subdomain_to_domain(domain_name, subdomain)
 		return new_dom, subdomain
 	return None, None
+
+def mark_as_scope(subdomain_name):
+	if check_subdomain(subdomain_name):
+		subdomain = get_subdomain(subdomain_name)
+		subdomain.is_scope = True
+		subdomain.save()
+		print_good("SubDomain in Scope!: %s" % subdomain_name)
+		return True
+	return False
+
+def set_ip_history(subdomain_name, ip_history):
+	if check_subdomain(subdomain_name):
+		subdomain = get_subdomain(subdomain_name)
+		subdomain.ip_history = ip_history
+		subdomain.save()
+		print_good("IP history added to %s" % subdomain_name)
+		return True
+	return False

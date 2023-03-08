@@ -8,3 +8,4 @@ class SubDomain(BaseDocument):
 	ip = db.StringField()
 	ip_history = db.ListField(db.StringField())
 	pages = db.ListField(db.ReferenceField("WebPage"))
+	is_scope = db.BooleanField(default=False)

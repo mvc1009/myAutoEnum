@@ -31,22 +31,22 @@ def reverse_ip(ip):
 	return results
 
 
-def read_subject_from_certificate(domain_name, port):
+def read_subject_from_certificate(ip, port):
 	# Read Subject from server certificate and obtain a DNS name
 	# Usage of OpenSSL
 	# No API KEY.
 	socket.setdefaulttimeout(2)
 	dns_names = set()
 	try:
-		cert = ssl.get_server_certificate((domain_name, port))
+		cert = ssl.get_server_certificate((ip, port))
 		x509 = OpenSSL.crypto.load_certificate(OpenSSL.crypto.FILETYPE_PEM, cert)
 		for i in x509.get_subject().get_components():
 			if i[0] == b"CN":
 				dns_names.add(i[1].decode())
-		print_debug("	OpenSSL %s:%s" % (domain_name, str(port)))
+		print_debug("	OpenSSL %s:%s - %s" % (ip, str(port), i[1].decode()))
 		return dns_names
 	except socket.timeout:
-		print_error("	Timeout %s:%s" % (domain_name, str(port)))
+		print_error("	Timeout %s:%s" % (ip, str(port)))
 		return None
 	except :
 		return None
