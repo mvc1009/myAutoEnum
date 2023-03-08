@@ -40,3 +40,16 @@ s1.save()
 s1 = Domain(name="example.com")
 s1.save()
 ```
+
+
+# environ
+
+dotenv is used, so create a `.env` file and add your api keys and your mongodb route.
+
+Example of `.env`:
+
+```
+DB_URL="mongodb://localhost:27017/myautoenum"
+VIEWDNS_API_KEY = "xxxxxxxxxxxxxxxxxxxx"
+PROXY = "socks5://localhost:xxxx"
+```

@@ -20,9 +20,9 @@ def reverse_ip(ip):
 	# API KEY is needed!
 	results = set()
 	if os.environ.get('VIEWDNS_API_KEY'):
-		r = requests.get('https://api.viewdns.info/reverseip/?host=%s&apikey=%s&output=json' % (ip, os.environ.get('VIEWDNS_API_KEY')))
+		r = requests.get('https://api.viewdns.info/reverseip/?host=%s&apikey=%s&output=json' % (ip, os.environ.get('VIEWDNS_API_KEY')), proxies=get_proxy())
 		if r.status_code == 200:
-			print(r_json)
+			r_json = r.json()
 			if int(r_json['response']['domain_count']) > 0:		
 				for name in r_json['response']['domains']:
 					results.add(name['name'])
@@ -77,7 +77,7 @@ def similar_certificate(domain_name):
 	# Return a set() of DNS names looking similar certificates from a domain.
 	# Usage of crt.sh
 	# No API KEY needed.
-	r = requests.get('https://crt.sh/?q=%s&output=json' % domain_name)
+	r = requests.get('https://crt.sh/?q=%s&output=json' % domain_name, proxies=get_proxy())
 	dns_names = set()
 	if r.status_code == 200:
 		r_json = r.json()
@@ -103,7 +103,7 @@ def wayback_domains(domain_name):
 	# Get a list of domain names from wayback machine.
 	# Based on https://gist.github.com/mhmdiaa/adf6bff70142e5091792841d4b372050
 	# No API KEY needed
-	r = requests.get('http://web.archive.org/cdx/search/cdx?url=*.%s/*&output=json&fl=original&collapse=urlkey' % domain_name)
+	r = requests.get('http://web.archive.org/cdx/search/cdx?url=*.%s/*&output=json&fl=original&collapse=urlkey' % domain_name, proxies=get_proxy())
 	dns_names = set()
 
 	if r.status_code == 200:

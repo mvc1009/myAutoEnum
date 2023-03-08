@@ -132,7 +132,7 @@ try:
 		parser.add_argument('-d', '--domains', action='store', dest='domain_file', help='File with Domains list', type=str)
 		parser.add_argument('-s', '--subdomains', action='store', dest='subdomain_file', help='File with SubDomains list', type=str)
 		parser.add_argument('-m', '--modules', action='store', dest='modules', help='Modules to use: reverse_ip,similar_certificate,read_certificate,wayback_domains,fuzz_dns,ip_history,wayback_urls', type=str)
-
+		parser.add_argument('-p', '--proxy', action='store', dest='proxy', help='Proxy to use. ej: socks5://localhost:9080', type=str)
 		global args
 		args =  parser.parse_args()
 
