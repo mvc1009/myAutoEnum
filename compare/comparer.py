@@ -10,4 +10,4 @@ def compare_scope(ips, subdomain_names):
 		out = dnslook.resolve()
 		if out[0]['IP'] in ips:
 			mark_as_scope(subdomain_name)
-			
+			set_ip(subdomain_name, out[0]['IP'])

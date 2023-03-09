@@ -72,12 +72,17 @@ def discover(discovery_modules):
 		find_subdomains(discovery_modules, args.name, domain_name)
 
 def compare():
+	# Compare the Subdomains with the IPs in scope, and store the IP address of the subdomain in scope.
+	# Note: if the is a load balancer present, it can cause some problems.
 	ips = get_all_ips()
 	subdomain_names = get_all_subdomain_names()
 	compare_scope(ips, subdomain_names)
 
-def enum():
-	print("")
+def enum(enum_modules):
+
+	subdomains = get_scope_subdomain_names()
+	for subdomain in subdomains:
+		print("")
 
 def export():
 	print("")
@@ -104,6 +109,9 @@ def main():
 		'get_emails',
 		'subdomain_takeover'
 	]
+	enum_modules = [
+		'ip_history',
+	]
 
 	# Defining the scope
 	print("")
@@ -115,20 +123,19 @@ def main():
 	print("")
 	print_status("Starting Discovery")
 	print("----------------------")
-	#discover(discovery_modules)
+	discover(discovery_modules)
 
 	# Compare
 	print("")
 	print_status("Comparing")
 	print("----------------------")
-	#compare()
-
+	compare()
 
 	# Enum
 	print("")
 	print_status("Starting Enumeration")
 	print("----------------------")
-	enum()
+	enum(enum_modules)
 	
 	# Export
 	print("")

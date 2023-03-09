@@ -21,14 +21,14 @@ def add_scope(scope_name):
 
 def add_host_to_scope(scope_name, host):
 	# Append the given Host object to the given scope
-	scope = Scope.objects(name=scope_name).first()
+	scope = get_scope(scope_name)
 	if scope:
 		scope.hosts.append(host)
 		scope.save()
 
 def add_domain_to_scope(scope_name, domain):
 	# Append the given Doamin object to the given scope
-	scope = Scope.objects(name=scope_name).first()
+	scope = get_scope(scope_name)
 	if scope:
 		scope.domains.append(domain)
 		scope.save()
@@ -98,7 +98,7 @@ def add_domain(domain_name):
 
 def add_subdomain_to_domain(domain_name, subdomain):
 	# Add the object SubDomain() to a given domain name.
-	dom = Domain.objects(name=domain_name).first()
+	dom = get_domain(domain_name)
 	if dom:
 		dom.subdomains.append(subdomain)
 		dom.save()
@@ -157,7 +157,7 @@ def get_all_subdomain_names():
 	subdomains = SubDomain.objects()
 	return [o.name for o in subdomains]
 
-def get_scope_subdomain_name():
+def get_scope_subdomain_names():
 	subdomains = SubDomain.objects(is_scope=True)
 	return [o.name for o in subdomains]
 
@@ -174,17 +174,26 @@ def new_subdomain(scope_name, subdomain_name):
 	return None, None
 
 def mark_as_scope(subdomain_name):
-	if check_subdomain(subdomain_name):
-		subdomain = get_subdomain(subdomain_name)
+	subdomain = get_subdomain(subdomain_name)
+	if subdomain and not subdomain.is_scope:
 		subdomain.is_scope = True
 		subdomain.save()
-		print_good("SubDomain in Scope!: %s" % subdomain_name)
+		print_good("SubDomain in Scope: %s" % subdomain_name)
+		return True
+	return False
+
+def set_ip(subdomain_name, ip):
+	subdomain = get_subdomain(subdomain_name)
+	if subdomain and not subdomain.ip:
+		subdomain.ip = ip
+		subdomain.save()
+		print_good("Resolution DNS added to %s" % subdomain_name)
 		return True
 	return False
 
 def set_ip_history(subdomain_name, ip_history):
-	if check_subdomain(subdomain_name):
-		subdomain = get_subdomain(subdomain_name)
+	subdomain = get_subdomain(subdomain_name)
+	if subdomain and not subdomain.ip_history:
 		subdomain.ip_history = ip_history
 		subdomain.save()
 		print_good("IP history added to %s" % subdomain_name)
