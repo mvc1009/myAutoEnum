@@ -95,9 +95,9 @@ def enum(enum_modules):
 	for subdomain_name in subdomain_names:
 		enum_subdomains(enum_modules, subdomain_name)
 
-	#urls = get_all_webpages_urls()
-	#for url in urls:
-	#	enum_webpages(enum_modules, url)
+	urls = get_all_webpages_urls()
+	for url in urls:
+		enum_webpages(enum_modules, url)
 
 def export():
 	print("")
@@ -148,13 +148,13 @@ def main():
 	print("")
 	print_status("WebSite Discovery")
 	print("----------------------")
-	discover_websites()
+	#discover_websites()
 
 	# Enum
 	print("")
 	print_status("Starting Enumeration")
 	print("----------------------")
-	#enum(enum_modules)
+	enum(enum_modules)
 	
 	# Export
 	print("")

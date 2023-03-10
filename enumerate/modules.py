@@ -55,7 +55,8 @@ def wayback_urls(subdomain_name):
 			r_json.pop(0)
 			for i in r_json:
 				for url in i:
-					#if filters...
-					print(url)
-					urls.add(url)
+					# Filtering css,woff,jpeg,jpg,png and gif files.
+					if ('.css' not in url) and ('.woff' not in url) and ('.jpeg' not in url) and ('.jpg' not in url) and ('.png' not in url) and ('.gif' not in url):
+						print(url)
+						urls.add(url)
 	return urls

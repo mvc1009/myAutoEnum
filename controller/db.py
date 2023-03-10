@@ -252,11 +252,11 @@ def new_webpage(subdomain_name, url):
 		return webpage
 	return None
 
-def set_wayback_urls(subdomain_name, ip_history):
-	subdomain = get_subdomain(subdomain_name)
-	if subdomain and not subdomain.ip_history:
-		subdomain.ip_history = ip_history
-		subdomain.save()
-		print_good("IP history added to %s" % subdomain_name)
+def set_wayback_urls(url, way_urls):
+	webpage = get_webpage(url)
+	if webpage:
+		webpage.wayback = way_urls
+		webpage.save()
+		print_good("Wayback URLS added to %s" % url)
 		return True
 	return False
