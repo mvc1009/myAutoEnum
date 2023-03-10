@@ -129,6 +129,16 @@ def new_domain(scope_name, domain_name):
 		add_domain_to_scope(scope_name, domain)
 		return domain
 	return None
+
+def set_domain_ip(domain_name, ip):
+	domain = get_subdomain(domain_name)
+	if domain and not domain.ip:
+		domain.ip = ip
+		domain.save()
+		print_good("Resolution DNS added to %s" % domain)
+		return True
+	return False
+
 #
 # ----------------------
 # SubDomain class interaction
@@ -173,6 +183,13 @@ def new_subdomain(scope_name, subdomain_name):
 		return new_dom, subdomain
 	return None, None
 
+def add_webpage_to_subdomain(subdomain_name, webpage):
+	# Add the object WebPage() to a given subdomain name.
+	subdomain = get_subdomain(subdomain_name)
+	if subdomain:
+		subdomain.pages.append(webpage)
+		subdomain.save()
+
 def mark_as_scope(subdomain_name):
 	subdomain = get_subdomain(subdomain_name)
 	if subdomain and not subdomain.is_scope:
@@ -182,7 +199,7 @@ def mark_as_scope(subdomain_name):
 		return True
 	return False
 
-def set_ip(subdomain_name, ip):
+def set_subdomain_ip(subdomain_name, ip):
 	subdomain = get_subdomain(subdomain_name)
 	if subdomain and not subdomain.ip:
 		subdomain.ip = ip
@@ -192,6 +209,50 @@ def set_ip(subdomain_name, ip):
 	return False
 
 def set_ip_history(subdomain_name, ip_history):
+	subdomain = get_subdomain(subdomain_name)
+	if subdomain and not subdomain.ip_history:
+		subdomain.ip_history = ip_history
+		subdomain.save()
+		print_good("IP history added to %s" % subdomain_name)
+		return True
+	return False
+
+
+#
+# ----------------------
+# WebPage class interaction
+# ----------------------
+#
+
+def add_webpage(url):
+	# Add a new WebPage to the collection
+	webpage = WebPage(url=url)
+	webpage.save()
+	print_good("WebPage added: %s" % url)
+	return webpage
+
+def check_webpage(url):
+	# Check if a subdomain exists with a given subdomain name
+	results = WebPage.objects(url=url)
+	return bool(results)
+
+def get_webpage(url):
+	# Get a WebPage from the collection
+	return WebPage.objects(url=url).first()
+
+def get_all_webpages_urls():
+	# Get a list of urls (str)
+	webpage = WebPage.objects()
+	return [o.url for o in webpage]	
+
+def new_webpage(subdomain_name, url):
+	if not check_webpage(url):
+		webpage = add_webpage(url)
+		add_webpage_to_subdomain(subdomain_name, webpage)
+		return webpage
+	return None
+
+def set_wayback_urls(subdomain_name, ip_history):
 	subdomain = get_subdomain(subdomain_name)
 	if subdomain and not subdomain.ip_history:
 		subdomain.ip_history = ip_history

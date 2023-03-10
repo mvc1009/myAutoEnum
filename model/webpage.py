@@ -10,4 +10,5 @@ class WebPage(BaseDocument):
 	status = db.StringField()
 	headers = db.ListField(db.DictField())
 	tags = db.ListField(db.DictField())
+	wayback = db.ListField(db.StringField())
 	#addrs = db.ListField(db.StringField())

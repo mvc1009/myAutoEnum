@@ -15,7 +15,7 @@ from controller.util import *
 #
 
 def reverse_ip(ip):
-	# Return a list of DNS names from a reverse DNS IP resolution.
+	# Return a set() of DNS names from a reverse DNS IP resolution.
 	# Usage of viewdns.info API.
 	# API KEY is needed!
 	results = set()

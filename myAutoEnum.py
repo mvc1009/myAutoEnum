@@ -10,6 +10,8 @@ from controller.util import *
 from discovery.discovery import *
 from discovery.modules import *
 from compare.comparer import *
+from enumerate.enumeration import *
+from enumerate.modules import *
 
 try:
 	import argparse
@@ -71,6 +73,11 @@ def discover(discovery_modules):
 	for domain_name in domain_names:
 		find_subdomains(discovery_modules, args.name, domain_name)
 
+def discover_websites():
+	subdomain_names = get_scope_subdomain_names()
+	for subdomain_name in subdomain_names:
+		find_websites(subdomain_name)
+
 def compare():
 	# Compare the Subdomains with the IPs in scope, and store the IP address of the subdomain in scope.
 	# Note: if the is a load balancer present, it can cause some problems.
@@ -80,9 +87,17 @@ def compare():
 
 def enum(enum_modules):
 
-	subdomains = get_scope_subdomain_names()
-	for subdomain in subdomains:
-		print("")
+	domain_names = get_all_domain_names()
+	for domain_name in domain_names:
+		enum_domains(enum_modules, domain_name)
+
+	subdomain_names = get_scope_subdomain_names()
+	for subdomain_name in subdomain_names:
+		enum_subdomains(enum_modules, subdomain_name)
+
+	#urls = get_all_webpages_urls()
+	#for url in urls:
+	#	enum_webpages(enum_modules, url)
 
 def export():
 	print("")
@@ -91,7 +106,6 @@ def main():
 	
 	# Initialize
 	init()
-
 	
 	discovery_modules = [
 		'reverse_ip',
@@ -105,7 +119,6 @@ def main():
 		'ip_history',
 		'wayback_urls',
 		'gowitness',
-		'dnslookup',
 		'get_emails',
 		'subdomain_takeover'
 	]
@@ -117,25 +130,31 @@ def main():
 	print("")
 	print_status("Defining the Scope")
 	print("----------------------")
-	read_scope()
+	#read_scope()
 		
 	# Discovery
 	print("")
 	print_status("Starting Discovery")
 	print("----------------------")
-	discover(discovery_modules)
+	#discover(discovery_modules)
 
 	# Compare
 	print("")
 	print_status("Comparing")
 	print("----------------------")
-	compare()
+	#compare()
+
+	# Websites Discovery
+	print("")
+	print_status("WebSite Discovery")
+	print("----------------------")
+	discover_websites()
 
 	# Enum
 	print("")
 	print_status("Starting Enumeration")
 	print("----------------------")
-	enum(enum_modules)
+	#enum(enum_modules)
 	
 	# Export
 	print("")

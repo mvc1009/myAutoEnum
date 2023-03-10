@@ -6,5 +6,7 @@ class Domain(BaseDocument):
 	'collection': 'domain_collection'
 	}
 	name = db.StringField(required=True, unique=True)
+	ip = db.StringField()
+	ip_history = db.ListField(db.DictField())
 	subdomains = db.ListField(db.ReferenceField("SubDomain"))
 
