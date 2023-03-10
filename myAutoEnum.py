@@ -29,7 +29,10 @@ try:
 except:
 	print_error('python-dotenv is not installed. Try "pip install python-dotenv"')
 
-
+try:
+	import shodan
+except:
+	print_error('shodan is not isntalled. Try "pip install shodan"')
 
 def init():
 	try:

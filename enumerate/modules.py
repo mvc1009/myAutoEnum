@@ -60,3 +60,13 @@ def wayback_urls(subdomain_name):
 						print(url)
 						urls.add(url)
 	return urls
+
+
+'''
+https://shodan.readthedocs.io/en/latest/examples/query-summary.html
+
+import shodan
+sh = shodan.Shodan('APIKEY')
+rjson  = sh.host('172.67.1.227')
+rjson2 = sh.info()
+'''
