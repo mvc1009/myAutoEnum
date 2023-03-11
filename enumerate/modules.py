@@ -3,6 +3,8 @@ from src.dnslookuper import DNSLookuper
 from controller.util import *
 import requests
 import shodan
+import ipwhois
+
 
 #
 # ---------------------------
@@ -35,6 +37,23 @@ def shodan_host(ip):
 	else:
 		print_error("No Shodan API key was provided!")
 		return None
+
+
+def whois_ip(ip):
+	# Return a the whois_result dict
+	ipwh = ipwhois.IPWhois(ip)
+	out = ipwh.lookup()
+	whois_result = {
+		"asn_registry" : out["asn_registry"],
+		"asn_cidr" : out["asn_cidr"],
+		"asn_country_code" : out["asn_country_code"],
+		"asn_date" : out["asn_date"],
+		"nir" : out["nir"],
+		"nets" : out["nets"] #list
+	}
+	return whois_result
+
+
 
 #
 # ---------------------------

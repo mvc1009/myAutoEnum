@@ -84,13 +84,21 @@ def get_all_ips():
 
 def set_shodan_host(ip, shodan_results):
 	host = get_host(ip)
-	if host and host.shodan:
+	if host and not host.shodan:
 		host.shodan = shodan_results
 		host.save()
 		print_good("Shodan results added to %s" % ip)
 		return True
 	return False
 
+def set_whois_host(ip, whois_results):
+	host = get_host(ip)
+	if host and not host.whois:
+		host.whois = whois_results
+		host.save()
+		print_good("Whois results added to %s" % ip)
+		return True
+	return False
 
 #
 # ----------------------
