@@ -90,6 +90,10 @@ def compare():
 
 def enum(enum_modules):
 
+	ips = get_all_ips()
+	for ip in ips:
+		enum_hosts(enum_modules, ip)
+	
 	domain_names = get_all_domain_names()
 	for domain_name in domain_names:
 		enum_domains(enum_modules, domain_name)
@@ -101,6 +105,7 @@ def enum(enum_modules):
 	urls = get_all_webpages_urls()
 	for url in urls:
 		enum_webpages(enum_modules, url)
+	
 
 def export():
 	print("")
@@ -112,6 +117,7 @@ def main():
 	
 	discovery_modules = [
 		'reverse_ip',
+		'shodan_domain',
 		'similar_certificate',
 		'read_certificate',
 		'wayback_domains',
@@ -121,12 +127,21 @@ def main():
 	enum_modules = [
 		'ip_history',
 		'wayback_urls',
+		'shodan_host',
 		'gowitness',
 		'get_emails',
 		'subdomain_takeover'
 	]
+	discovery_modules = [
+		'reverse_ip',
+		'shodan_domain',
+		'similar_certificate',
+		'read_certificate',
+		'wayback_domains',
+		'fuzz_dns'
+	],
 	enum_modules = [
-		'ip_history',
+		'shodan_host',
 	]
 
 	# Defining the scope

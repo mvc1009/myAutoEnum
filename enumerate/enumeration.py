@@ -2,6 +2,15 @@ from src.dnslookuper import DNSLookuper
 from controller.db import *
 from enumerate.modules import *
 
+def enum_hosts(enum_modules, ip):
+	print("")
+	print_debug("Enumerating host %s" % ip)
+
+	# Modules
+	if 'shodan_host' in enum_modules:
+		print_status("	Shodan Host module")
+		shodan_results = shodan_host(ip)
+		set_shodan_host(ip, shodan_results)
 
 def enum_domains(enum_modules, domain_name):
 	print("")
@@ -26,9 +35,6 @@ def enum_subdomains(enum_modules, subdomain_name):
 	print_status('	Resolving DNS address')
 	ip = resolve(subdomain_name)
 	set_subdomain_ip(subdomain_name, ip)
-	
-
-
 
 
 def enum_webpages(enum_modules, url):

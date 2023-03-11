@@ -36,6 +36,9 @@ def find_subdomains(discovery_modules, scope_name, domain_name):
 	if 'fuzz_dns' in discovery_modules:
 		print_status('	Fuzz DNS module')
 		results.update(fuzz_dns(domain_name))
+	if 'shodan_domain' in discovery_modules:
+		print_status('	Shodan domain module')
+		results.update(shodan_domain(domain_name))
 
 	parse_results(discovery_modules, scope_name, results)
 	return results

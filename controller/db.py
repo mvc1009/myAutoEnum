@@ -82,6 +82,16 @@ def get_all_ips():
 	hosts = Host.objects()
 	return [o.ip for o in hosts]
 
+def set_shodan_host(ip, shodan_results):
+	host = get_host(ip)
+	if host and host.shodan:
+		host.shodan = shodan_results
+		host.save()
+		print_good("Shodan results added to %s" % ip)
+		return True
+	return False
+
+
 #
 # ----------------------
 #  Domain class interaction

@@ -4,6 +4,7 @@ import ssl
 import OpenSSL
 import socket
 import sys
+import shodan
 from concurrent import futures
 from src.dnslookuper import DNSLookuper
 from controller.util import *
@@ -140,3 +141,16 @@ def fuzz_dns(domain_name, dictfile='./src/dns-test.txt'):
 				results.add(l['DNS'])
 
 	return results
+
+def shodan_domain(domain_name):
+	dns_names = set()
+	if os.environ.get('SHODAN_API_KEY'):
+		sh = shodan.Shodan(os.environ.get('SHODAN_API_KEY'))
+		rjson = sh.dns.domain_info(domain_name, history=True)
+		for subdomain_name in rjson['subdomains']:
+			if subdomain_name and subdomain_name != '*':
+				dns_names.add(subdomain_name + '.' + domain_name)
+				print(subdomain_name + '.' + domain_name)
+	else:
+		print_error("No Shodan API key was provided!")
+	return dns_names

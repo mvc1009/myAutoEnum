@@ -2,6 +2,39 @@ import os
 from src.dnslookuper import DNSLookuper
 from controller.util import *
 import requests
+import shodan
+
+#
+# ---------------------------
+# Host enum modules
+# ---------------------------
+#
+
+def shodan_host(ip):
+	if os.environ.get('SHODAN_API_KEY'):
+		sh = shodan.Shodan(os.environ.get('SHODAN_API_KEY'))
+		try:
+			rjson = sh.host(ip)
+			shodan_results ={
+				"domains" : rjson["domains"], #list
+				"hostnames" : rjson["hostnames"], #list
+				"tags" : rjson["tags"], #list
+				"region_code" : rjson["region_code"], #str
+				"country_code" : rjson["country_code"], #str
+				"city" : rjson["city"], #str
+				"isp" : rjson["isp"], #str
+				"organization" : rjson["org"], #str
+				"os" : rjson["os"], #str
+				"ports" : rjson["ports"], #list
+				"data_services" : rjson["data"] #list
+			}
+			return shodan_results
+		except shodan.exception.APIError as err:
+			print_error("Shodan error: %s" % err)
+			return None
+	else:
+		print_error("No Shodan API key was provided!")
+		return None
 
 #
 # ---------------------------
@@ -61,12 +94,3 @@ def wayback_urls(subdomain_name):
 						urls.add(url)
 	return urls
 
-
-'''
-https://shodan.readthedocs.io/en/latest/examples/query-summary.html
-
-import shodan
-sh = shodan.Shodan('APIKEY')
-rjson  = sh.host('172.67.1.227')
-rjson2 = sh.info()
-'''
