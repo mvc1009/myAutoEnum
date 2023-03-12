@@ -72,7 +72,7 @@ def parse_host(ip):
 	rjson = {
 		"info_node" : {
 			"node_name" : ip,
-			"icon" : "gray",
+			"icon" : "info",
 			"bold" : False,
 			"color" : "white"
 		},
@@ -219,7 +219,7 @@ def parse_domain(domain_name):
 	rjson = {
 		"info_node" : {
 			"node_name" : domain_name,
-			"icon" : "gray",
+			"icon" : "info",
 			"bold" : False,
 			"color" : "white"
 		},
@@ -229,10 +229,20 @@ def parse_domain(domain_name):
 	return rjson
 
 def parse_subdomain(subdomain_name):
-	print()
+	rjson = {
+		"info_node" : {
+			"node_name" : subdomain_name,
+			"icon" : "gray",
+			"bold" : False,
+			"color" : "white"
+		},
+		"content_node" : [],
+		"sub_node" : []
+	}
+	return rjson
 
 def parse_webpage(url):
-	print()
+	a = 2
 
 def export_json(results_json, filename):
 	# save json to export with myCherryParser

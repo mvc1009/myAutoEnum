@@ -188,6 +188,9 @@ def get_scope_subdomain_names():
 	subdomains = SubDomain.objects(is_scope=True)
 	return [o.name for o in subdomains]
 
+def get_subdomain_ip(subdomain_name):
+	return SubDomain.objects(name=subdomain_name).first().ip
+
 def new_subdomain(scope_name, subdomain_name):
 	if not check_subdomain(subdomain_name):
 		subdomain = add_subdomain(subdomain_name)

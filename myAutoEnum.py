@@ -132,18 +132,24 @@ def export():
 
 	# Parse Hosts
 	ips = get_all_ips()
+	subdomain_names = get_scope_subdomain_names()
 	for ip in ips:
-		results_json['sub_node'][0]['sub_node'].append(parse_host(ip))
+		host_parsed = parse_host(ip)
+		
+		# Parse Subdomains
+		for subdomain_name in subdomain_names:
+			if ip == get_subdomain_ip(subdomain_name):
+				subdomain_parsed = parse_subdomain(subdomain_name)
+				host_parsed['sub_node'].append(subdomain_parsed)
+				
+		results_json['sub_node'][0]['sub_node'].append(host_parsed)
 
 	# Parse Domains
 	domain_names = get_all_domain_names()
 	for domain_name in domain_names:
 		results_json['sub_node'][1]['sub_node'].append(parse_domain(domain_name))
 
-	# Parse Subdomains
-	subdomain_names = get_scope_subdomain_names()
-	for subdomain_name in subdomain_names:
-		parse_subdomain(subdomain_name)
+
 
 	# Parse Webs
 	urls = get_all_webpages_urls()
