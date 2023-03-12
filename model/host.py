@@ -5,7 +5,7 @@ class Host(BaseDocument):
 	'collection': 'ip_collection'
 	}
 	ip = db.StringField(required=True, unique=True)
-	whois = db.StringField(default="null")
+	whois = db.DictField()
 	shodan = db.DictField()
 	#domains = db.ListField(db.ReferenceField("Domain"))
 

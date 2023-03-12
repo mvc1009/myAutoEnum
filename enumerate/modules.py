@@ -28,7 +28,8 @@ def shodan_host(ip):
 				"organization" : rjson["org"], #str
 				"os" : rjson["os"], #str
 				"ports" : rjson["ports"], #list
-				"data_services" : rjson["data"] #list
+				#"data_services" : rjson["data"] #list
+				# problems with overflow in int 64bits
 			}
 			return shodan_results
 		except shodan.exception.APIError as err:

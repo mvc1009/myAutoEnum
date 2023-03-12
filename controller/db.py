@@ -5,7 +5,6 @@ from model.domain import Domain
 from model.subdomain import SubDomain
 from model.webpage import WebPage
 from controller.util import *
-
 #
 # ----------------------
 # Scope class interaction

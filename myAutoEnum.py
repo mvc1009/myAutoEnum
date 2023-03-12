@@ -1,4 +1,5 @@
 import os,sys
+from datetime import datetime
 
 from model.scope import Scope
 from model.host import Host
@@ -12,6 +13,7 @@ from discovery.modules import *
 from compare.comparer import *
 from enumerate.enumeration import *
 from enumerate.modules import *
+from export.parser import *
 
 try:
 	import argparse
@@ -93,7 +95,7 @@ def enum(enum_modules):
 	ips = get_all_ips()
 	for ip in ips:
 		enum_hosts(enum_modules, ip)
-	
+	'''
 	domain_names = get_all_domain_names()
 	for domain_name in domain_names:
 		enum_domains(enum_modules, domain_name)
@@ -105,10 +107,58 @@ def enum(enum_modules):
 	urls = get_all_webpages_urls()
 	for url in urls:
 		enum_webpages(enum_modules, url)
-	
+	'''
 
+'''
+# Cherry Tree output format
+# Made with https://asciiflow.com/#/
+#
+# Scope
+#   │
+#   ├─► Host
+#   │   │
+#   │   └─► SubDomain
+#   │
+#   ├─► Domain
+#   │
+#   │
+#   └─► Vulnerabilities
+'''
 def export():
-	print("")
+
+	# Parse Scope
+	scope = get_scope(args.name)
+	results_json =	parse_scope(args.name)
+
+	# Parse Hosts
+	ips = get_all_ips()
+	for ip in ips:
+		results_json['sub_node'][0]['sub_node'].append(parse_host(ip))
+
+	# Parse Domains
+	domain_names = get_all_domain_names()
+	for domain_name in domain_names:
+		results_json['sub_node'][1]['sub_node'].append(parse_domain(domain_name))
+
+	# Parse Subdomains
+	subdomain_names = get_scope_subdomain_names()
+	for subdomain_name in subdomain_names:
+		parse_subdomain(subdomain_name)
+
+	# Parse Webs
+	urls = get_all_webpages_urls()
+	for url in urls:
+		parse_webpage(url)
+
+	# Export json
+	date = datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
+	filename = '/tmp/myautoenum_results_%s.json' % date
+	export_json(results_json, filename)
+	
+	# Create cherry
+	outputfile = '%s.ctd' % args.name
+
+	create_cherry(filename, outputfile)
 
 def main():
 	
@@ -132,23 +182,16 @@ def main():
 		'get_emails',
 		'subdomain_takeover'
 	]
-	discovery_modules = [
-		'reverse_ip',
-		'shodan_domain',
-		'similar_certificate',
-		'read_certificate',
-		'wayback_domains',
-		'fuzz_dns'
-	],
+
 	enum_modules = [
-		'shodan_host',
+		'whois_ip'
 	]
 
 	# Defining the scope
 	print("")
 	print_status("Defining the Scope")
 	print("----------------------")
-	#read_scope()
+	read_scope()
 		
 	# Discovery
 	print("")
@@ -172,7 +215,7 @@ def main():
 	print("")
 	print_status("Starting Enumeration")
 	print("----------------------")
-	enum(enum_modules)
+	#enum(enum_modules)
 	
 	# Export
 	print("")
