@@ -173,7 +173,7 @@ def main():
 	
 	discovery_modules = [
 		'reverse_ip',
-		'shodan_domain',
+		#'shodan_domain',
 		'similar_certificate',
 		'read_certificate',
 		'wayback_domains',
@@ -189,10 +189,6 @@ def main():
 		'subdomain_takeover'
 	]
 
-	enum_modules = [
-		'whois_ip'
-	]
-
 	# Defining the scope
 	print("")
 	print_status("Defining the Scope")
@@ -203,13 +199,13 @@ def main():
 	print("")
 	print_status("Starting Discovery")
 	print("----------------------")
-	#discover(discovery_modules)
+	discover(discovery_modules)
 
 	# Compare
 	print("")
 	print_status("Comparing")
 	print("----------------------")
-	#compare()
+	compare()
 
 	# Websites Discovery
 	print("")
