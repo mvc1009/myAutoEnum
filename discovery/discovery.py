@@ -24,7 +24,7 @@ def find_subdomains(discovery_modules, scope_name, domain_name):
 	print_debug("Finding Subdomains of %s" % domain_name)
 	
 	results = set()
-	results.update("www.%s" % domain_name)
+	results.add("www.%s" % domain_name)
 	
 	# Modules
 	if 'similar_certificate' in discovery_modules:

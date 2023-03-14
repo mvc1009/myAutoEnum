@@ -90,7 +90,7 @@ def similar_certificate(domain_name):
 		r_json = r.json()
 		# Parse Common Name
 		for i in r_json:
-			if '@' not in i['common_name'] and domain_name in i['common_name']:
+			if i['common_name'] and '@' not in i['common_name'] and domain_name in i['common_name']:
 				if '*.' in i['common_name']:
 					dns_names.add('.'.join(i['common_name'].split('.')[1:]))
 				else:
