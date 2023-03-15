@@ -6,5 +6,6 @@ __pycache__
 domains.txt
 ips.txt
 subdomains.txt
-test.ctd
+test.ctd*
+test?.ctd*
 Pipfile

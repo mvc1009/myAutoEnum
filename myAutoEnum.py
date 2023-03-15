@@ -147,7 +147,7 @@ def export():
 		
 		# Parse Subdomains
 		for subdomain_name in subdomain_names:
-			if ip == get_subdomain_ip(subdomain_name):
+			if ip in get_subdomain_ip(subdomain_name):
 				subdomain_parsed = parse_subdomain(subdomain_name)
 				# Parse Webs
 				urls = get_subdomain_urls(subdomain_name)
@@ -182,7 +182,7 @@ def main():
 	
 	discovery_modules = [
 		'reverse_ip',
-		#'shodan_domain',
+		'shodan_domain',
 		'similar_certificate',
 		'read_certificate',
 		'wayback_domains',
@@ -193,15 +193,9 @@ def main():
 		'ip_history',
 		'wayback_urls',
 		'shodan_host',
-		'gowitness',
-		'get_emails',
-		'subdomain_takeover',
 		'whois_ip'
 	]
-	enum_modules = [
-		'wayback_urls'
-	]
-
+	enum_modules= []
 	# Defining the scope
 	print("")
 	print_status("Defining the Scope")

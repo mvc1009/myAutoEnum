@@ -87,5 +87,8 @@ VIEWDNS_API_KEY_99999 = "xxxxxxxxxxxxxxxxxxxx"
 
 # To improve
 
-[ ] Store all results from a DNS resolution instead of the first one. Useful when the host has a load balancer.
+[x] Store all results from a DNS resolution instead of the first one. Useful when the host has a load balancer.
 [ ] API Key rotator.
+[ ] Module gowitness
+[ ] Module Fuzzer
+[ ] Module find emails

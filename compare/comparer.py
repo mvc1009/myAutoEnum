@@ -8,6 +8,8 @@ def compare_scope(ips, subdomain_names):
 	for subdomain_name in subdomain_names:
 		dnslook = DNSLookuper(domains=[subdomain_name])
 		out = dnslook.resolve()
-		if out[0]['IP'] in ips:
-			mark_as_scope(subdomain_name)
-			set_subdomain_ip(subdomain_name, out[0]['IP'])
+		if out and out != 'None':
+			r = [o['IP'] for o in out if o['IP'] in ips]
+			if r:
+				mark_as_scope(subdomain_name)
+				set_subdomain_ip(subdomain_name, [o['IP'] for o in out])

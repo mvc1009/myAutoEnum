@@ -67,7 +67,9 @@ def resolve(domain_name):
 	# Usage of DNSLookuper
 	dnslook = DNSLookuper(domains=[domain_name])
 	out = dnslook.resolve()
-	return out[0]['IP']
+	if out and out != 'None':
+		return [o['IP'] for o in out]
+	return None
 
 def ip_history(domain_name):
 	# Return a list() of records {"IP" : ip, "location" : location, "owner": owner, "lastseen" : lastseen}
@@ -110,5 +112,5 @@ def wayback_urls(subdomain_name):
 					# Filtering css,woff,jpeg,jpg,png and gif files.
 					if ('.css' not in url) and ('.woff' not in url) and ('.jpeg' not in url) and ('.jpg' not in url) and ('.png' not in url) and ('.gif' not in url):
 						urls.add(url)
-	return list(urls)
+	return list(urls)[0:100]
 

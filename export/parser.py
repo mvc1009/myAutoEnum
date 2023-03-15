@@ -176,22 +176,23 @@ def parse_domain(domain_name):
 					"h2",
 					"bold"
 				]
-			},
-			{
+			}			
+		]
+		for ip in domain.ip:
+			content.append({
 				"type" : "text",
-				"string" : str(domain.ip)+"\n\n",
+				"string" : str(ip),
 				"style" : [
 					"h3"
 				]
-			}
-		]
+			})
 		rjson['content_node'] = rjson['content_node'] + content
 
 	if domain.ip_history and domain.ip_history != '' and domain.ip_history != 'null':
 		content = [
 			{
 				"type" : "text",
-				"string" : "IP History\n",
+				"string" : "\n\nIP History\n",
 				"style" : [
 					"h2",
 					"bold"
@@ -235,22 +236,23 @@ def parse_subdomain(subdomain_name):
 					"h2",
 					"bold"
 				]
-			},
-			{
+			}
+		]
+		for ip in subdomain.ip:
+			content.append({
 				"type" : "text",
-				"string" : str(subdomain.ip)+"\n\n",
+				"string" : str(ip),
 				"style" : [
 					"h3"
 				]
-			}
-		]
+			})
 		rjson['content_node'] = rjson['content_node'] + content
 
 	if subdomain.ip_history and subdomain.ip_history != '' and subdomain.ip_history != 'null':
 		content = [
 			{
 				"type" : "text",
-				"string" : "IP History\n",
+				"string" : "\n\nIP History\n",
 				"style" : [
 					"h2",
 					"bold"

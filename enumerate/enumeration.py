@@ -23,8 +23,8 @@ def enum_domains(enum_modules, domain_name):
 	
 	# Modules
 	print_status('	Resolving DNS address')
-	ip = resolve(domain_name)
-	set_domain_ip(domain_name, ip)
+	ips = resolve(domain_name)
+	set_domain_ip(domain_name, ips)
 
 	if 'ip_history' in enum_modules:
 		print_status('	IP History module')
@@ -37,8 +37,8 @@ def enum_subdomains(enum_modules, subdomain_name):
 
 	# Modules
 	print_status('	Resolving DNS address')
-	ip = resolve(subdomain_name)
-	set_subdomain_ip(subdomain_name, ip)
+	ips = resolve(subdomain_name)
+	set_subdomain_ip(subdomain_name, ips)
 
 	if 'ip_history' in enum_modules:
 		print_status('	IP History module')
