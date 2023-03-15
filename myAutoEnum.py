@@ -100,19 +100,18 @@ def enum(enum_modules):
 	ips = get_all_ips()
 	for ip in ips:
 		enum_hosts(enum_modules, ip)
-	'''
+	
 	domain_names = get_all_domain_names()
 	for domain_name in domain_names:
 		enum_domains(enum_modules, domain_name)
-
+	
 	subdomain_names = get_scope_subdomain_names()
 	for subdomain_name in subdomain_names:
 		enum_subdomains(enum_modules, subdomain_name)
-
+	
 	urls = get_all_webpages_urls()
 	for url in urls:
 		enum_webpages(enum_modules, url)
-	'''
 
 '''
 # Cherry Tree output format
@@ -135,6 +134,11 @@ def export():
 	scope = get_scope(args.name)
 	results_json =	parse_scope(args.name)
 
+	# Parse Domains
+	domain_names = get_all_domain_names()
+	for domain_name in domain_names:
+		results_json['sub_node'][1]['sub_node'].append(parse_domain(domain_name))
+
 	# Parse Hosts
 	ips = get_all_ips()
 	subdomain_names = get_scope_subdomain_names()
@@ -145,14 +149,14 @@ def export():
 		for subdomain_name in subdomain_names:
 			if ip == get_subdomain_ip(subdomain_name):
 				subdomain_parsed = parse_subdomain(subdomain_name)
+				# Parse Webs
+				urls = get_subdomain_urls(subdomain_name)
+				for url in urls:
+					webpage_parsed = parse_webpage(url)
+					subdomain_parsed['sub_node'].append(webpage_parsed)
 				host_parsed['sub_node'].append(subdomain_parsed)
-				
 		results_json['sub_node'][0]['sub_node'].append(host_parsed)
 
-	# Parse Domains
-	domain_names = get_all_domain_names()
-	for domain_name in domain_names:
-		results_json['sub_node'][1]['sub_node'].append(parse_domain(domain_name))
 
 
 
@@ -195,7 +199,7 @@ def main():
 		'whois_ip'
 	]
 	enum_modules = [
-		'whois_ip'
+		'wayback_urls'
 	]
 
 	# Defining the scope

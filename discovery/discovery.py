@@ -76,6 +76,7 @@ def find_websites(subdomain_name):
 			url = "%s://%s:%s" % (pr[0], subdomain_name, str(pr[1]))
 			r = requests.get(url, timeout=2)
 			new_webpage(subdomain_name, url)
+			print_good("	Connected to %s" % url)
 		except requests.exceptions.Timeout:
 			print_error("	Timeout %s" % url)
 		except:

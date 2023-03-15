@@ -148,13 +148,23 @@ def new_domain(scope_name, domain_name):
 	return None
 
 def set_domain_ip(domain_name, ip):
-	domain = get_subdomain(domain_name)
+	domain = get_domain(domain_name)
 	if domain and not domain.ip:
 		domain.ip = ip
 		domain.save()
-		print_good("Resolution DNS added to %s" % domain)
+		print_good("Resolution DNS added to %s" % domain_name)
 		return True
 	return False
+
+def set_domain_ip_history(domain_name, ip_history):
+	domain = get_domain(domain_name)
+	if domain and not domain.ip_history:
+		domain.ip_history = ip_history
+		domain.save()
+		print_good("IP history added to %s" % domain_name)
+		return True
+	return False
+
 
 #
 # ----------------------
@@ -190,6 +200,12 @@ def get_scope_subdomain_names():
 
 def get_subdomain_ip(subdomain_name):
 	return SubDomain.objects(name=subdomain_name).first().ip
+
+def get_subdomain_urls(subdomain_name):
+	subdomain = get_subdomain(subdomain_name)
+	if subdomain:
+		return [o.url for o in subdomain.pages]
+	return list()
 
 def new_subdomain(scope_name, subdomain_name):
 	if not check_subdomain(subdomain_name):
@@ -228,7 +244,7 @@ def set_subdomain_ip(subdomain_name, ip):
 		return True
 	return False
 
-def set_ip_history(subdomain_name, ip_history):
+def set_subdomain_ip_history(subdomain_name, ip_history):
 	subdomain = get_subdomain(subdomain_name)
 	if subdomain and not subdomain.ip_history:
 		subdomain.ip_history = ip_history

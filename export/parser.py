@@ -101,7 +101,7 @@ def parse_host(ip):
 			{
 				"type" : "table",
 				"cells" : [
-					["Result", "Value"],
+					["                  Result            ", "                                           Value                                                         "],
 					["Domains",", ".join(host.shodan['domains'])],
 					["Hostnames", ", ".join(host.shodan['hostnames'])],
 					["ISP", str(host.shodan['isp'])],
@@ -122,23 +122,31 @@ def parse_host(ip):
 		rjson['content_node'] = rjson['content_node'] + content
 
 	if host.whois and host.whois != '' and host.whois != 'null':
-		whois_title = {
-			"type" : "text",
-			"string" : "Whois\n",
-			"style" : [
-				"h2",
-				"bold"
-			]
-		}
-
-		rjson['content_node'].append(whois_title)
-
+		nets = ''
+		for i in host.whois['nets']:
+			nets += str(i['cidr']) + '\n' + str(i['name']) + '\n' + str(i['handle']) + '\n' + str(i['country']) + '\n' + str(i['address']) + '\n' + str(i['created']) + '\n' + str(i['updated']) + '\n'
+			nets += '\n'
 		content = [
 			{
 				"type" : "text",
-				"string" : "Tags",
+				"string" : "Whois\n",
 				"style" : [
+					"h2",
 					"bold"
+				]
+			},
+			{
+				"type" : "table",
+				"cells" : [
+					["                  Result            ", "                                           Value                                                         "],
+					["ASN Registry", str(host.whois['asn_registry'])],
+					["ASN Cidr", str(host.whois['asn_cidr'])],
+					["ASN Country Code", str(host.whois['asn_country_code'])],
+					["ASN Date", str(host.whois['asn_date'])],
+					["Nets", nets],
+					["Nir", str(host.whois['nir'])]
+
+
 				]
 			},
 		]
@@ -148,6 +156,7 @@ def parse_host(ip):
 	return rjson
 
 def parse_domain(domain_name):
+	domain = get_domain(domain_name)
 	rjson = {
 		"info_node" : {
 			"node_name" : domain_name,
@@ -158,9 +167,54 @@ def parse_domain(domain_name):
 		"content_node" : [],
 		"sub_node" : []
 	}
+	if domain.ip and domain.ip != '' and domain.ip != 'null':
+		content = [
+			{
+				"type" : "text",
+				"string" : "DNS Resolution\n",
+				"style" : [
+					"h2",
+					"bold"
+				]
+			},
+			{
+				"type" : "text",
+				"string" : str(domain.ip)+"\n\n",
+				"style" : [
+					"h3"
+				]
+			}
+		]
+		rjson['content_node'] = rjson['content_node'] + content
+
+	if domain.ip_history and domain.ip_history != '' and domain.ip_history != 'null':
+		content = [
+			{
+				"type" : "text",
+				"string" : "IP History\n",
+				"style" : [
+					"h2",
+					"bold"
+				]
+			},
+			{
+				"type" : "table",
+				"cells" : [
+					["        IP Address        ", "        Location        ", "                Owner                ", "  Last seen on this IP  "]
+				]
+			}
+		]
+		for ip_result in domain.ip_history:
+			a = [ str(ip_result['ip']), str(ip_result['location']), str(ip_result['owner']), str(ip_result['lastseen'])]
+			content[1]['cells'].append(a)
+
+		rjson['content_node'] = rjson['content_node'] + content
+
+
 	return rjson
 
 def parse_subdomain(subdomain_name):
+	subdomain = get_subdomain(subdomain_name)
 	rjson = {
 		"info_node" : {
 			"node_name" : subdomain_name,
@@ -171,10 +225,86 @@ def parse_subdomain(subdomain_name):
 		"content_node" : [],
 		"sub_node" : []
 	}
+
+	if subdomain.ip and subdomain.ip != '' and subdomain.ip != 'null':
+		content = [
+			{
+				"type" : "text",
+				"string" : "DNS Resolution\n",
+				"style" : [
+					"h2",
+					"bold"
+				]
+			},
+			{
+				"type" : "text",
+				"string" : str(subdomain.ip)+"\n\n",
+				"style" : [
+					"h3"
+				]
+			}
+		]
+		rjson['content_node'] = rjson['content_node'] + content
+
+	if subdomain.ip_history and subdomain.ip_history != '' and subdomain.ip_history != 'null':
+		content = [
+			{
+				"type" : "text",
+				"string" : "IP History\n",
+				"style" : [
+					"h2",
+					"bold"
+				]
+			},
+			{
+				"type" : "table",
+				"cells" : [
+					["        IP Address        ", "        Location        ", "                Owner                ", "  Last seen on this IP  "]
+				]
+			}
+		]
+		for ip_result in subdomain.ip_history:
+			a = [ str(ip_result['ip']), str(ip_result['location']), str(ip_result['owner']), str(ip_result['lastseen'])]
+			content[1]['cells'].append(a)
+
+		rjson['content_node'] = rjson['content_node'] + content
+
 	return rjson
 
 def parse_webpage(url):
-	a = 2
+	web = get_webpage(url)
+	rjson = {
+		"info_node" : {
+			"node_name" : url,
+			"icon" : "green",
+			"bold" : False,
+			"color" : "white"
+		},
+		"content_node" : [],
+		"sub_node" : []
+	}
+
+	if web.wayback and web.wayback != '' and web.wayback != 'null':
+		content = [
+			{
+				"type" : "text",
+				"string" : "Wayback Records\n",
+				"style" : [
+					"h2",
+					"bold"
+				]
+			}
+		]
+		for r in web.wayback:
+			content.append({
+				"type" : "text",
+				"string" : str(r),
+				"style" : [
+				]
+			})
+		rjson['content_node'] = rjson['content_node'] + content
+
+	return rjson
 
 def export_json(results_json, filename):
 	# save json to export with myCherryParser

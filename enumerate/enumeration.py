@@ -29,8 +29,7 @@ def enum_domains(enum_modules, domain_name):
 	if 'ip_history' in enum_modules:
 		print_status('	IP History module')
 		ip_history_results = ip_history(domain_name)
-		print(ip_history_results)
-		set_ip_history(domain_name, ip_history_results)
+		set_domain_ip_history(domain_name, ip_history_results)
 
 def enum_subdomains(enum_modules, subdomain_name):
 	print("")
@@ -41,6 +40,10 @@ def enum_subdomains(enum_modules, subdomain_name):
 	ip = resolve(subdomain_name)
 	set_subdomain_ip(subdomain_name, ip)
 
+	if 'ip_history' in enum_modules:
+		print_status('	IP History module')
+		ip_history_results = ip_history(subdomain_name)
+		set_subdomain_ip_history(subdomain_name, ip_history_results)
 
 def enum_webpages(enum_modules, url):
 	print("")
@@ -49,5 +52,5 @@ def enum_webpages(enum_modules, url):
 	# Modules
 	if 'wayback_urls' in enum_modules:
 		print_status('	Wayback URLS module')
-		way_urls = wayback_urls(subdomain_name)
+		way_urls = wayback_urls(url)
 		set_wayback_urls(url, way_urls)

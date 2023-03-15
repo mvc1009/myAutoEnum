@@ -76,7 +76,6 @@ def ip_history(domain_name):
 	results = list()
 	if os.environ.get('VIEWDNS_API_KEY'):
 		r = requests.get("https://api.viewdns.info/iphistory/?domain=%s&apikey=%s&output=json" % (domain_name, os.environ.get('VIEWDNS_API_KEY')), proxies=get_proxy())
-		print(r.text)
 		if (r.status_code == 200) and ('limit reached' not in r.text):
 			r_json = r.json()
 			if "error" in r_json['response'].keys():
@@ -110,7 +109,6 @@ def wayback_urls(subdomain_name):
 				for url in i:
 					# Filtering css,woff,jpeg,jpg,png and gif files.
 					if ('.css' not in url) and ('.woff' not in url) and ('.jpeg' not in url) and ('.jpg' not in url) and ('.png' not in url) and ('.gif' not in url):
-						print(url)
 						urls.add(url)
-	return urls
+	return list(urls)
 
