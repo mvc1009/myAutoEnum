@@ -1,5 +1,5 @@
 import os
-
+import re
 
 def print_status(message=""):
 	print(f"\033[1;34m[*]\033[1;m {message}")
@@ -23,13 +23,13 @@ def str_domain_from_subdomain(subdomain):
 
 def str_is_domain(entry):
 	le = entry.split('.')
-	if len(le) == 2:
+	if len(le) == 2 and len(entry) > 3 and re.match('\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}', entry) == None:
 		return True
 	return False
 
 def str_is_subdomain(entry):
 	le = entry.split('.')
-	if len(le) > 2:
+	if len(le) > 2 and len(entry) > 5 and entry[-1] != '*' and re.match('\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}', entry) == None:
 		return True
 	return False
 

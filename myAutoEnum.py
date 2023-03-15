@@ -53,17 +53,20 @@ def read_scope():
 	# Scope
 	new_scope(args.name)
 
-	# IPs
-	for ip in open(args.ip_file):
-		new_host(args.name, ip.rstrip())
+	if args.ip_file:
+		# IPs
+		for ip in open(args.ip_file):
+			new_host(args.name, ip.rstrip())
 
-	# Domains
-	for domain_name in open(args.domain_file):
-		new_domain(args.name, domain_name.rstrip())
+	if args.domain_file:
+		# Domains
+		for domain_name in open(args.domain_file):
+			new_domain(args.name, domain_name.rstrip())
 
-	# Subdomains
-	for subdomain_name in open(args.subdomain_file):
-		new_subdomain(args.name, subdomain_name.rstrip())
+	if args.subdomain_file:
+		# Subdomains
+		for subdomain_name in open(args.subdomain_file):
+			new_subdomain(args.name, subdomain_name.rstrip())
 
 
 def discover(discovery_modules):
@@ -71,12 +74,16 @@ def discover(discovery_modules):
 	# Getting Domains/SubDomains from IPs
 	ips = get_all_ips()
 	for ip in ips:
-		find_domains(discovery_modules, args.name, ip)
+		if ip:
+			print("HERE")
+			print("IP : %s" % ip)
+			find_domains(discovery_modules, args.name, ip)
 
 	# Getting SubDomains from Domains
 	domain_names = get_all_domain_names()
-	for domain_name in domain_names:
-		find_subdomains(discovery_modules, args.name, domain_name)
+	if domain_names:
+		for domain_name in domain_names:
+			find_subdomains(discovery_modules, args.name, domain_name)
 
 def discover_websites():
 	subdomain_names = get_scope_subdomain_names()
@@ -173,7 +180,7 @@ def main():
 	
 	discovery_modules = [
 		'reverse_ip',
-		'shodan_domain',
+		#'shodan_domain',
 		'similar_certificate',
 		'read_certificate',
 		'wayback_domains',
@@ -189,10 +196,6 @@ def main():
 		'subdomain_takeover'
 	]
 
-	enum_modules = [
-		'whois_ip'
-	]
-
 	# Defining the scope
 	print("")
 	print_status("Defining the Scope")
@@ -203,7 +206,7 @@ def main():
 	print("")
 	print_status("Starting Discovery")
 	print("----------------------")
-	#discover(discovery_modules)
+	discover(discovery_modules)
 
 	# Compare
 	print("")

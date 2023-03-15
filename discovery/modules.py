@@ -60,14 +60,17 @@ def read_certificate(ip):
 	# Usage of OpenSSL
 	# No API KEY.
 	PORTS = [443,8443,4443,5000,5443,6443,7443,9443]
+	PORTS = [443]
 	dns_names = set()
 	for port in PORTS:
 		subject = read_subject_from_certificate(ip, port)
 		if subject:
-			if '*.' in subject:
-				dns_names.update(subject[2:])
-			else:
-				dns_names.update(subject)
+			for sub in subject:
+				if sub:
+					if '*.' in sub:
+						dns_names.add(str(sub[2:]))
+					else:
+						dns_names.add(str(sub))
 	return dns_names
 
 #
@@ -87,7 +90,7 @@ def similar_certificate(domain_name):
 		r_json = r.json()
 		# Parse Common Name
 		for i in r_json:
-			if '@' not in i['common_name'] and domain_name in i['common_name']:
+			if i['common_name'] and '@' not in i['common_name'] and domain_name in i['common_name']:
 				if '*.' in i['common_name']:
 					dns_names.add('.'.join(i['common_name'].split('.')[1:]))
 				else:
