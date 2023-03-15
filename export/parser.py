@@ -88,10 +88,43 @@ def parse_host(ip):
 			"bold"
 		]
 	}
+	if host.shodan and host.shodan != '' and host.shodan != 'null':
+		content = [
+			{
+				"type" : "text",
+				"string" : "Shodan\n",
+				"style" : [
+					"h2",
+					"bold"
+				]
+			},
+			{
+				"type" : "table",
+				"cells" : [
+					["Result", "Value"],
+					["Domains",", ".join(host.shodan['domains'])],
+					["Hostnames", ", ".join(host.shodan['hostnames'])],
+					["ISP", str(host.shodan['isp'])],
+					["City/Region/Country", str(host.shodan['city']) + " - " + str(host.shodan['region_code'])+ " - " + str(host.shodan['country_code'])],
+					["Organization",str(host.shodan['organization'])],
+					["OS",str(host.shodan['os'])],
+					["Ports", ', '.join([str(i) for i in sorted(host.shodan['ports'])])],
+					["Tags",', '.join(host.shodan['tags'])]
+				]
+			},
+			{
+				"type" : "text",
+				"string" : "\n",
+				"style" : [
+				]
+			}
+		]
+		rjson['content_node'] = rjson['content_node'] + content
+
 	if host.whois and host.whois != '' and host.whois != 'null':
 		whois_title = {
 			"type" : "text",
-			"string" : "Whois",
+			"string" : "Whois\n",
 			"style" : [
 				"h2",
 				"bold"
@@ -100,118 +133,17 @@ def parse_host(ip):
 
 		rjson['content_node'].append(whois_title)
 
-		whois_content = {
-
-		}
-
-	if host.shodan and host.shodan != '' and host.shodan != 'null':
 		content = [
-		{
-			"type" : "text",
-			"string" : "Shodan\n",
-			"style" : [
-				"h2",
-				"bold"
-			]
-		},
-		{
-			"type" : "text",
-			"string" : "Domains",
-			"style" : [
-				"bold"
-			]
-		},
-		{
-			"type" : "text",
-			"string" : ", ".join(host.shodan['domains']) + "\n",
-			"style" : []
-		},
-		{
-			"type" : "text",
-			"string" : "Hostnames",
-			"style" : [
-				"bold"
-			]
-		},
-		{
-			"type" : "text",
-			"string" : ", ".join(host.shodan['hostnames']) + "\n",
-			"style" : []
-		},
-		{
-			"type" : "text",
-			"string" : "ISP",
-			"style" : [
-				"bold"
-			]
-		},
-		{
-			"type" : "text",
-			"string" : str(host.shodan['isp']) + "\n",
-			"style" : []
-		},
-		{
-			"type" : "text",
-			"string" : "City/Region/Country",
-			"style" : [
-				"bold"
-			]
-		},
-		{
-			"type" : "text",
-			"string" : str(host.shodan['city']) + " - " + str(host.shodan['region_code'])+ " - " + str(host.shodan['country_code']) +"\n",
-			"style" : []
-		},
-		{
-			"type" : "text",
-			"string" : "Organization",
-			"style" : [
-				"bold"
-			]
-		},
-		{
-			"type" : "text",
-			"string" : str(host.shodan['organization']) +"\n",
-			"style" : []
-		},
-		{
-			"type" : "text",
-			"string" : "OS",
-			"style" : [
-				"bold"
-			]
-		},
-		{
-			"type" : "text",
-			"string" : str(host.shodan['os']) +"\n",
-			"style" : []
-		},
-		{
-			"type" : "text",
-			"string" : "Ports",
-			"style" : [
-				"bold"
-			]
-		},
-		{
-			"type" : "text",
-			"string" : ', '.join([str(i) for i in sorted(host.shodan['ports'])])+"\n",
-			"style" : []
-		},
-		{
-			"type" : "text",
-			"string" : "Tags",
-			"style" : [
-				"bold"
-			]
-		},
-		{
-			"type" : "text",
-			"string" : ', '.join(host.shodan['tags'])+"\n",
-			"style" : []
-		},
+			{
+				"type" : "text",
+				"string" : "Tags",
+				"style" : [
+					"bold"
+				]
+			},
 		]
 		rjson['content_node'] = rjson['content_node'] + content
+
 
 	return rjson
 

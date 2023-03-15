@@ -60,7 +60,6 @@ def read_certificate(ip):
 	# Usage of OpenSSL
 	# No API KEY.
 	PORTS = [443,8443,4443,5000,5443,6443,7443,9443]
-	PORTS = [443]
 	dns_names = set()
 	for port in PORTS:
 		subject = read_subject_from_certificate(ip, port)

@@ -12,7 +12,7 @@ def enum_hosts(enum_modules, ip):
 		shodan_results = shodan_host(ip)
 		set_shodan_host(ip, shodan_results)
 
-	if 'whois' in enum_modules:
+	if 'whois_ip' in enum_modules:
 		print_status("	Whois IP module")
 		whois_results = whois_ip(ip)
 		set_whois_host(ip, whois_results)

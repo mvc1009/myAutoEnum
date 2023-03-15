@@ -1,2 +1,5 @@
 ipwhois
 shodan
+lxml
+dotenv
+requests[socks]

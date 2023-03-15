@@ -93,6 +93,18 @@ class myCherryParser():
 				ET.SubElement(element, "encoded_png", char_offset="99999999", justification="center", link="").text=my_image
 				ET.SubElement(element, "rich_text", style="", weight="").text="\n"
 
+			elif content['type'] == "image_b64":
+				ET.SubElement(element, "encoded_png", char_offset="99999999", justification="center", link="").text=content['image']
+				ET.SubElement(element, "rich_text", style="", weight="").text="\n"
+
+			elif content['type'] == "table":
+				table = ET.SubElement(element, "table", char_offset="99999999", justification="left", col_min="60", col_max="60", col_widths="0,0,0")
+				sorted_content = content['cells'][1:] + content['cells'][0:1]
+				for row in sorted_content:
+					row_element = ET.SubElement(table, "row")
+					for cell in row:
+						ET.SubElement(row_element, "cell").text = cell
+
 
 	def parse_subnodes(self, element, data):
 			# Array of nodes

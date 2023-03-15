@@ -75,8 +75,6 @@ def discover(discovery_modules):
 	ips = get_all_ips()
 	for ip in ips:
 		if ip:
-			print("HERE")
-			print("IP : %s" % ip)
 			find_domains(discovery_modules, args.name, ip)
 
 	# Getting SubDomains from Domains
@@ -193,7 +191,11 @@ def main():
 		'shodan_host',
 		'gowitness',
 		'get_emails',
-		'subdomain_takeover'
+		'subdomain_takeover',
+		'whois_ip'
+	]
+	enum_modules = [
+		'whois_ip'
 	]
 
 	# Defining the scope
@@ -206,7 +208,7 @@ def main():
 	print("")
 	print_status("Starting Discovery")
 	print("----------------------")
-	discover(discovery_modules)
+	#discover(discovery_modules)
 
 	# Compare
 	print("")
