@@ -290,9 +290,18 @@ def new_webpage(subdomain_name, url):
 
 def set_wayback_urls(url, way_urls):
 	webpage = get_webpage(url)
-	if webpage:
+	if webpage and way_urls:
 		webpage.wayback = way_urls
 		webpage.save()
 		print_good("Wayback URLS added to %s" % url)
 		return True
 	return False
+
+def set_screenshot(url, image_path):
+	webpage = get_webpage(url)
+	if webpage and image_path:
+		webpage.screenshot = image_path
+		webpage.save()
+		print_good("Screnshoot added to %s" % url)
+		return True
+	return False	

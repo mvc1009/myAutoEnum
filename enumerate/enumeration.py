@@ -54,3 +54,8 @@ def enum_webpages(enum_modules, url):
 		print_status('	Wayback URLS module')
 		way_urls = wayback_urls(url)
 		set_wayback_urls(url, way_urls)
+	if 'gowitness' in enum_modules:
+		print_status('	Gowitness module')
+		info = gowitness(url)
+		if info:
+			set_screenshot(url, info['image_path'])

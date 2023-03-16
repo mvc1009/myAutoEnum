@@ -40,6 +40,11 @@ def str_get_domain_from_url(url):
 			return a
 	return None
 
+def str_get_printable_url(url):
+	proto = str(url.split(':')[0])
+	domain = str_get_domain_from_url(url)
+	port=str(url.split(':')[2])
+	return "%s-%s-%s" % (proto,domain,port)
 
 def get_proxy():
 	if os.environ.get("PROXY") != '':

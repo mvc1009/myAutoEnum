@@ -9,3 +9,6 @@ subdomains.txt
 test.ctd*
 test?.ctd*
 Pipfile
+gowitness.sqlite3
+gowitness*
+screenshots/

@@ -6,7 +6,7 @@ class WebPage(BaseDocument):
 	}
 	url = db.StringField(required=True, unique=True)
 	title = db.StringField()
-	screenshot = db.StringField() # Image -> Base64
+	screenshot = db.StringField() # ImagePath
 	status = db.StringField()
 	headers = db.ListField(db.DictField())
 	tags = db.ListField(db.DictField())

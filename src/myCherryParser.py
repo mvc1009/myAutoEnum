@@ -104,7 +104,7 @@ class myCherryParser():
 					row_element = ET.SubElement(table, "row")
 					for cell in row:
 						ET.SubElement(row_element, "cell").text = cell
-
+				ET.SubElement(element, "rich_text", style="", weight="").text="\n"
 
 	def parse_subnodes(self, element, data):
 			# Array of nodes

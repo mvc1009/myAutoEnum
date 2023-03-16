@@ -76,7 +76,16 @@ def parse_host(ip):
 			"bold" : False,
 			"color" : "white"
 		},
-		"content_node" : [],
+		"content_node" : [
+			{
+				"type" : "text",
+				"string" : ip +"\n",
+				"style" : [
+					"h1",
+					"bold"
+				]
+			}
+		],
 		"sub_node" : []
 	}
 
@@ -164,7 +173,16 @@ def parse_domain(domain_name):
 			"bold" : False,
 			"color" : "white"
 		},
-		"content_node" : [],
+		"content_node" : [
+			{
+				"type" : "text",
+				"string" : domain_name +"\n",
+				"style" : [
+					"h1",
+					"bold"
+				]
+			}
+		],
 		"sub_node" : []
 	}
 	if domain.ip and domain.ip != '' and domain.ip != 'null':
@@ -223,7 +241,16 @@ def parse_subdomain(subdomain_name):
 			"bold" : False,
 			"color" : "white"
 		},
-		"content_node" : [],
+		"content_node" : [
+			{
+				"type" : "text",
+				"string" : subdomain_name +"\n",
+				"style" : [
+					"h1",
+					"bold"
+				]
+			}
+		],
 		"sub_node" : []
 	}
 
@@ -282,9 +309,25 @@ def parse_webpage(url):
 			"bold" : False,
 			"color" : "white"
 		},
-		"content_node" : [],
+		"content_node" : [
+			{
+				"type" : "text",
+				"string" : url +"\n",
+				"style" : [
+					"h1",
+					"bold"
+				]
+			}
+		],
 		"sub_node" : []
 	}
+
+	if web.screenshot and web.screenshot != '' and web.screenshot != 'null':
+		content = {
+			"type" : "image",
+			"path" : web.screenshot
+		}
+		rjson['content_node'].append(content)
 
 	if web.wayback and web.wayback != '' and web.wayback != 'null':
 		content = [
@@ -305,6 +348,8 @@ def parse_webpage(url):
 				]
 			})
 		rjson['content_node'] = rjson['content_node'] + content
+
+
 
 	return rjson
 

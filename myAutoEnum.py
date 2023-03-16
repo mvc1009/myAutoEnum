@@ -193,9 +193,10 @@ def main():
 		'ip_history',
 		'wayback_urls',
 		'shodan_host',
-		'whois_ip'
+		'whois_ip',
+		'gowitness'
 	]
-	enum_modules= []
+	enum_modules= ['gowitness']
 	# Defining the scope
 	print("")
 	print_status("Defining the Scope")

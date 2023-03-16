@@ -13,6 +13,9 @@ import ipwhois
 #
 
 def shodan_host(ip):
+	# Obtain information about a host from shodan.
+	# Usage of Shodan API key.
+	# Shodan API Key needed!
 	if os.environ.get('SHODAN_API_KEY'):
 		sh = shodan.Shodan(os.environ.get('SHODAN_API_KEY'))
 		try:
@@ -114,3 +117,15 @@ def wayback_urls(subdomain_name):
 						urls.add(url)
 	return list(urls)[0:100]
 
+def gowitness(url):
+	# Get some information from the website with gowitness.
+	# Need to set a env variable in the .env file:
+	# GOWITNESS_BIN = "./src/gowitness-2.4.2-linux-amd64"
+	if os.environ.get('GOWITNESS_BIN'):
+		os.system("echo '%s' | %s file -f -" % (url, os.environ.get('GOWITNESS_BIN')))
+		image_path = os.getcwd() + '/screenshots/' + str_get_printable_url(url) + '.png'
+		if str_get_printable_url(url) + '.png' in os.listdir("./screenshots"):
+			return {
+				"image_path" : image_path
+			}
+	return None
