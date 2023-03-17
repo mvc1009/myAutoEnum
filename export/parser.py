@@ -321,6 +321,89 @@ def parse_webpage(url):
 		],
 		"sub_node" : []
 	}
+	if web.title and web.title != '' and web.title != 'null':
+		content = [
+			{
+				"type" : "text",
+				"string" : "Title\n",
+				"style" : [
+					"h2",
+					"bold"
+				]
+			},
+			{
+				"type" : "text",
+				"string" : "%s\n" % web.title,
+				"style" : [
+				]
+			}
+		]
+		rjson['content_node'] = rjson['content_node'] + content
+
+	if web.status and web.status != '' and web.status != 'null':
+		content = [
+			{
+				"type" : "text",
+				"string" : "Status\n",
+				"style" : [
+					"h2",
+					"bold"
+				]
+			},
+			{
+				"type" : "text",
+				"string" : "%s\n" % web.status,
+				"style" : [
+				]
+			}
+		]
+		rjson['content_node'] = rjson['content_node'] + content
+
+	if web.tags and web.tags != '' and web.tags != 'null':
+		content = [
+			{
+				"type" : "text",
+				"string" : "Tags\n",
+				"style" : [
+					"h2",
+					"bold"
+				]
+			},
+			{
+				"type" : "table",
+				"cells" : [
+					["                                                                  Tags                                                                  "]
+				]
+			}
+		]
+		for i in web.tags:
+			content[1]['cells'].append([i])
+	
+		rjson['content_node'] = rjson['content_node'] + content
+
+	if web.headers and web.headers != '' and web.headers != 'null':
+		content = [
+			{
+				"type" : "text",
+				"string" : "Headers\n",
+				"style" : [
+					"h2",
+					"bold"
+				]
+			},
+			{
+				"type" : "table",
+				"cells" : [
+					["                                         Header                                      ", "                                                                   Value                                                                              "]
+				]
+			}
+		]
+		for i in web.headers:
+			content[1]['cells'].append([i['header'], i['value']])
+	
+		rjson['content_node'] = rjson['content_node'] + content
+
+		
 
 	if web.screenshot and web.screenshot != '' and web.screenshot != 'null':
 		content = {

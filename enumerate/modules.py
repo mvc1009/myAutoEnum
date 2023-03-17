@@ -4,7 +4,7 @@ from controller.util import *
 import requests
 import shodan
 import ipwhois
-
+import sqlite3
 
 #
 # ---------------------------
@@ -123,9 +123,40 @@ def gowitness(url):
 	# GOWITNESS_BIN = "./src/gowitness-2.4.2-linux-amd64"
 	if os.environ.get('GOWITNESS_BIN'):
 		os.system("echo '%s' | %s file -f -" % (url, os.environ.get('GOWITNESS_BIN')))
-		image_path = os.getcwd() + '/screenshots/' + str_get_printable_url(url) + '.png'
-		if str_get_printable_url(url) + '.png' in os.listdir("./screenshots"):
+		# Get gowtiness results from gowitness.sqlite3 database
+		try:
+			conn = sqlite3.connect("gowitness.sqlite3")
+			sql = conn.cursor()
+		except:
+			print_error("Problems with gowitness database")
+
+		# Getting: url_id, title,filename, response_reason
+		# URLS table
+		res = sql.execute("SELECT id,filename,title,response_reason from urls WHERE url='%s'" % url)
+		a = res.fetchone()
+
+		if a:
+			url_id, filename, title, response_reason = a
+			# Getting: technologies
+			# TECHNOLOGIES table
+			res = sql.execute("SELECT value from technologies where url_id=%d" % int(url_id))
+			a = res.fetchall()	
+			technologies = [o[0] for o in a if o[0]]
+
+			# Getting: headers
+			# HEADERS table
+			res = sql.execute("SELECT key,value from headers where url_id=%d" % int(url_id))
+			a = res.fetchall()
+			headers = list()
+			for i in a:
+				if i:
+					headers.append({"header" : i[0], "value" : i[1]})
+
 			return {
-				"image_path" : image_path
-			}
+					"title" : title,
+					"status_code" : response_reason,
+					"image_path" : os.getcwd() + '/screenshots/' + filename,
+					"technologies" : technologies,
+					"headers" : headers
+				}
 	return None

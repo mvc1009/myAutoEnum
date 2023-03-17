@@ -9,6 +9,5 @@ class WebPage(BaseDocument):
 	screenshot = db.StringField() # ImagePath
 	status = db.StringField()
 	headers = db.ListField(db.DictField())
-	tags = db.ListField(db.DictField())
+	tags = db.ListField(db.StringField())
 	wayback = db.ListField(db.StringField())
-	#addrs = db.ListField(db.StringField())

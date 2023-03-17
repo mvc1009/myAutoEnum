@@ -304,4 +304,40 @@ def set_screenshot(url, image_path):
 		webpage.save()
 		print_good("Screnshoot added to %s" % url)
 		return True
-	return False	
+	return False
+
+def set_title(url, title):
+	webpage = get_webpage(url)
+	if webpage and title:
+		webpage.title = title
+		webpage.save()
+		print_good("Title added to %s" % url)
+		return True
+	return False
+
+def set_status(url, status):
+	webpage = get_webpage(url)
+	if webpage and status:
+		webpage.status = status
+		webpage.save()
+		print_good("Status added to %s" % url)
+		return True
+	return False
+
+def set_tags(url, tags):
+	webpage = get_webpage(url)
+	if webpage and tags:
+		webpage.tags = tags
+		webpage.save()
+		print_good("Tags added to %s" % url)
+		return True
+	return False
+
+def set_headers(url, headers):
+	webpage = get_webpage(url)
+	if webpage and headers:
+		webpage.headers = headers
+		webpage.save()
+		print_good("Headers added to %s" % url)
+		return True
+	return False
