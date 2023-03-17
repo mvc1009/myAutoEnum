@@ -196,7 +196,7 @@ def main():
 		'whois_ip',
 		'gowitness'
 	]
-	enum_modules= ['gowitness']
+	
 	# Defining the scope
 	print("")
 	print_status("Defining the Scope")

@@ -108,7 +108,7 @@ sudo apt-get install google-chrome-stable
 
 # To improve
 
-* API Key rotator.
+* API Key rotator
 * Module Fuzzer
 * Module find emails
-* Implment some low hanging fruits
+* Implement some low hanging fruits
