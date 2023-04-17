@@ -125,7 +125,7 @@ def wayback_domains(domain_name):
 						dns_names.add(domain)
 	return dns_names
 
-def fuzz_dns(domain_name, dictfile='./src/dns-test.txt'):
+def fuzz_dns(domain_name, dictfile='./src/subdomains-top1mil-5000.txt'):
 	# Return a set() of subdomains doing bruteforcing A queries. 
 	# Based on https://github.com/mvc1009/DNSLookuper
 	# No API KEY needed.

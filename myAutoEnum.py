@@ -207,7 +207,7 @@ def main():
 	print("")
 	print_status("Starting Discovery")
 	print("----------------------")
-	#discover(discovery_modules)
+	discover(discovery_modules)
 
 	# Compare
 	print("")
