@@ -186,7 +186,7 @@ def main():
 		'similar_certificate',
 		'read_certificate',
 		'wayback_domains',
-		'fuzz_dns'
+		#'fuzz_dns'
 	]
 	
 	enum_modules = [

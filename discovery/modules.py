@@ -148,11 +148,14 @@ def shodan_domain(domain_name):
 	dns_names = set()
 	if os.environ.get('SHODAN_API_KEY'):
 		sh = shodan.Shodan(os.environ.get('SHODAN_API_KEY'))
-		rjson = sh.dns.domain_info(domain_name, history=True)
-		for subdomain_name in rjson['subdomains']:
-			if subdomain_name and subdomain_name != '*':
-				dns_names.add(subdomain_name + '.' + domain_name)
-				print(subdomain_name + '.' + domain_name)
+		try:
+			rjson = sh.dns.domain_info(domain_name, history=True)
+			for subdomain_name in rjson['subdomains']:
+				if subdomain_name and subdomain_name != '*':
+					dns_names.add(subdomain_name + '.' + domain_name)
+					print(subdomain_name + '.' + domain_name)
+		except:
+			pass
 	else:
 		print_error("No Shodan API key was provided!")
 	return dns_names
