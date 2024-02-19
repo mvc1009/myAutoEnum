@@ -1,4 +1,5 @@
 import os,sys
+import config
 from model.scope import Scope
 from model.host import Host
 from model.domain import Domain
@@ -142,7 +143,7 @@ def get_all_domain_names():
 
 def new_domain(scope_name, domain_name):
 	if not check_domain(domain_name):
-		if args.ask:
+		if config.ask:
 			r = input('\t[?] You want to add %s to the list? [y/n]' % domain_name)
 			if r.lower() == 'y':
 				domain = add_domain(domain_name)

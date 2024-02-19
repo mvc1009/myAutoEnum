@@ -1,4 +1,6 @@
 import os,sys
+import config
+
 from datetime import datetime
 
 from model.scope import Scope
@@ -52,22 +54,22 @@ def init():
 def read_scope():
 
 	# Scope
-	new_scope(args.name)
+	new_scope(config.name)
 
-	if args.ip_file:
+	if config.ip_file:
 		# IPs
-		for ip in open(args.ip_file):
-			new_host(args.name, ip.rstrip())
+		for ip in open(config.ip_file):
+			new_host(config.name, ip.rstrip())
 
-	if args.domain_file:
+	if config.domain_file:
 		# Domains
-		for domain_name in open(args.domain_file):
-			new_domain(args.name, domain_name.rstrip())
+		for domain_name in open(config.domain_file):
+			new_domain(config.name, domain_name.rstrip())
 
-	if args.subdomain_file:
+	if config.subdomain_file:
 		# Subdomains
-		for subdomain_name in open(args.subdomain_file):
-			new_subdomain(args.name, subdomain_name.rstrip())
+		for subdomain_name in open(config.subdomain_file):
+			new_subdomain(config.name, subdomain_name.rstrip())
 
 
 def discover(discovery_modules):
@@ -132,8 +134,8 @@ def enum(enum_modules):
 def export():
 
 	# Parse Scope
-	scope = get_scope(args.name)
-	results_json =	parse_scope(args.name)
+	scope = get_scope(config.name)
+	results_json =	parse_scope(config.name)
 
 	# Parse Domains
 	domain_names = get_all_domain_names()
@@ -172,7 +174,7 @@ def export():
 	export_json(results_json, filename)
 	
 	# Create cherry
-	outputfile = '%s.ctd' % args.name
+	outputfile = '%s.ctd' % config.name
 
 	create_cherry(filename, outputfile)
 
@@ -251,6 +253,15 @@ try:
 		parser.add_argument('-a', '--ask', action='store_true', dest='ask', help='Ask to add new found domain to the discovery')
 		global args
 		args =  parser.parse_args()
+
+		config.name = args.name
+		config.ip_file = args.ip_file
+		config.domain_file = args.domain_file
+		config.subdomain_file = args.subdomain_file
+		config.modules = args.modules
+		config.proxy = args.proxy
+		config.ask = args.ask
+
 
 		if len(sys.argv) < 2:
 			parser.print_help()
