@@ -1,5 +1,6 @@
 ipwhois
+pyopenssl
 shodan
 lxml
-dotenv
+python-dotenv
 requests[socks]

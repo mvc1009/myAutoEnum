@@ -142,9 +142,16 @@ def get_all_domain_names():
 
 def new_domain(scope_name, domain_name):
 	if not check_domain(domain_name):
-		domain = add_domain(domain_name)
-		add_domain_to_scope(scope_name, domain)
-		return domain
+		if args.ask:
+			r = input('\t[?] You want to add %s to the list? [y/n]' % domain_name)
+			if r.lower() == 'y':
+				domain = add_domain(domain_name)
+				add_domain_to_scope(scope_name, domain)
+				return domain
+		else:
+			domain = add_domain(domain_name)
+			add_domain_to_scope(scope_name, domain)
+			return domain
 	return None
 
 def set_domain_ip(domain_name, ip):

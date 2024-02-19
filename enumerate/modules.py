@@ -47,12 +47,13 @@ def whois_ip(ip):
 	# Return a the whois_result dict
 	ipwh = ipwhois.IPWhois(ip)
 	out = ipwh.lookup()
+	print(out)
 	whois_result = {
 		"asn_registry" : out["asn_registry"],
 		"asn_cidr" : out["asn_cidr"],
 		"asn_country_code" : out["asn_country_code"],
 		"asn_date" : out["asn_date"],
-		"nir" : out["nir"],
+		"nir" : "",#out["nir"],
 		"nets" : out["nets"] #list
 	}
 	return whois_result
@@ -133,30 +134,34 @@ def gowitness(url):
 		# Getting: url_id, title,filename, response_reason
 		# URLS table
 		res = sql.execute("SELECT id,filename,title,response_reason from urls WHERE url='%s'" % url)
-		a = res.fetchone()
+		try:
+			a = res.fetchone()
 
-		if a:
-			url_id, filename, title, response_reason = a
-			# Getting: technologies
-			# TECHNOLOGIES table
-			res = sql.execute("SELECT value from technologies where url_id=%d" % int(url_id))
-			a = res.fetchall()	
-			technologies = [o[0] for o in a if o[0]]
+			if a:
+				url_id, filename, title, response_reason = a
+				# Getting: technologies
+				# TECHNOLOGIES table
+				res = sql.execute("SELECT value from technologies where url_id=%d" % int(url_id))
+				a = res.fetchall()	
+				technologies = [o[0] for o in a if o[0]]
 
-			# Getting: headers
-			# HEADERS table
-			res = sql.execute("SELECT key,value from headers where url_id=%d" % int(url_id))
-			a = res.fetchall()
-			headers = list()
-			for i in a:
-				if i:
-					headers.append({"header" : i[0], "value" : i[1]})
+				# Getting: headers
+				# HEADERS table
+				res = sql.execute("SELECT key,value from headers where url_id=%d" % int(url_id))
+				a = res.fetchall()
+				headers = list()
+				for i in a:
+					if i:
+						headers.append({"header" : i[0], "value" : i[1]})
 
-			return {
-					"title" : title,
-					"status_code" : response_reason,
-					"image_path" : os.getcwd() + '/screenshots/' + filename,
-					"technologies" : technologies,
-					"headers" : headers
-				}
+				return {
+						"title" : title,
+						"status_code" : response_reason,
+						"image_path" : os.getcwd() + '/screenshots/' + filename,
+						"technologies" : technologies,
+						"headers" : headers
+					}
+		except:
+			return None
+
 	return None

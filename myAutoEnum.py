@@ -43,6 +43,7 @@ def init():
 		# Connecting to the Database
 		print_status("Connecting to the Database")
 		db.connect(host=os.environ.get("DB_URL"))
+		print(os.environ.get("DB_URL"))
 	except:
 		print_error("Err while connecting to mongodb")
 		sys.exit(0)
@@ -231,7 +232,7 @@ def main():
 	print("")
 	print_status("Starting Exports")
 	print("----------------------")
-	export()
+	#export()
 
 	# Exit
 	print("")
@@ -247,6 +248,7 @@ try:
 		parser.add_argument('-s', '--subdomains', action='store', dest='subdomain_file', help='File with SubDomains list', type=str)
 		parser.add_argument('-m', '--modules', action='store', dest='modules', help='Modules to use: reverse_ip,similar_certificate,read_certificate,wayback_domains,fuzz_dns,ip_history,wayback_urls', type=str)
 		parser.add_argument('-p', '--proxy', action='store', dest='proxy', help='Proxy to use. ej: socks5://localhost:9080', type=str)
+		parser.add_argument('-a', '--ask', action='store_true', dest='ask', help='Ask to add new found domain to the discovery')
 		global args
 		args =  parser.parse_args()
 

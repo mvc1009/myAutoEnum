@@ -22,7 +22,8 @@ def reverse_ip(ip):
 	results = set()
 	if os.environ.get('VIEWDNS_API_KEY'):
 		r = requests.get('https://api.viewdns.info/reverseip/?host=%s&apikey=%s&output=json' % (ip, os.environ.get('VIEWDNS_API_KEY')), proxies=get_proxy())
-		if r.status_code == 200:
+		if r.status_code == 200 and 'limit' not in r.text:
+			print(r.text)
 			r_json = r.json()
 			if int(r_json['response']['domain_count']) > 0:		
 				for name in r_json['response']['domains']:

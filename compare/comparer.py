@@ -10,6 +10,7 @@ def compare_scope(ips, subdomain_names):
 		out = dnslook.resolve()
 		if out and out != 'None':
 			r = [o['IP'] for o in out if o['IP'] in ips]
+			#r = [o['IP'] for o in out]
 			if r:
 				mark_as_scope(subdomain_name)
 				set_subdomain_ip(subdomain_name, [o['IP'] for o in out])

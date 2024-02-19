@@ -32,7 +32,7 @@ def str_is_domain(entry):
 
 def str_is_subdomain(entry):
 	le = entry.split('.')
-	if len(le) > 2 and len(entry) > 5 and entry[-1] != '*' and re.match('\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}', entry) == None and le[-2] not in tld_list:
+	if len(le) > 2 and len(entry) > 5 and entry[-1] != '*' and re.match('\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}', entry) == None and le[-2].upper() not in tld_list:
 		return True
 	return False
 
