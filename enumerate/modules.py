@@ -103,20 +103,23 @@ def wayback_urls(subdomain_name):
 	# Get a list of domain names from wayback machine.
 	# Based on https://gist.github.com/mhmdiaa/adf6bff70142e5091792841d4b372050
 	# No API KEY needed
-	r = requests.get('http://web.archive.org/cdx/search/cdx?url=%s/*&output=json&fl=original&collapse=urlkey' % subdomain_name, proxies=get_proxy())
-	urls = set()
+	try:
+		r = requests.get('http://web.archive.org/cdx/search/cdx?url=%s/*&output=json&fl=original&collapse=urlkey' % subdomain_name, proxies=get_proxy())
+		urls = set()
 
-	if r.status_code == 200:
-		r_json = r.json()		
-		if len(r_json) > 1:
-			# Delete "original" from the list
-			r_json.pop(0)
-			for i in r_json:
-				for url in i:
-					# Filtering css,woff,jpeg,jpg,png and gif files.
-					if ('.css' not in url) and ('.woff' not in url) and ('.jpeg' not in url) and ('.jpg' not in url) and ('.png' not in url) and ('.gif' not in url):
-						urls.add(url)
-	return list(urls)[0:100]
+		if r.status_code == 200:
+			r_json = r.json()		
+			if len(r_json) > 1:
+				# Delete "original" from the list
+				r_json.pop(0)
+				for i in r_json:
+					for url in i:
+						# Filtering css,woff,jpeg,jpg,png and gif files.
+						if ('.css' not in url) and ('.woff' not in url) and ('.jpeg' not in url) and ('.jpg' not in url) and ('.png' not in url) and ('.gif' not in url):
+							urls.add(url)
+		return list(urls)[0:100]
+	except:
+		return null
 
 def gowitness(url):
 	# Get some information from the website with gowitness.
