@@ -197,14 +197,14 @@ def main():
 		'wayback_urls',
 		'shodan_host',
 		'whois_ip',
-		'gowitness'
+		#'gowitness'
 	]
 	
 	# Defining the scope
 	print("")
 	print_status("Defining the Scope")
 	print("----------------------")
-	read_scope()
+	#read_scope()
 		
 	# Discovery
 	print("")
@@ -234,7 +234,7 @@ def main():
 	print("")
 	print_status("Starting Exports")
 	print("----------------------")
-	export()
+	#export()
 
 	# Exit
 	print("")

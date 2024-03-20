@@ -119,7 +119,7 @@ def wayback_urls(subdomain_name):
 							urls.add(url)
 		return list(urls)[0:100]
 	except:
-		return null
+		return None
 
 def gowitness(url):
 	# Get some information from the website with gowitness.
